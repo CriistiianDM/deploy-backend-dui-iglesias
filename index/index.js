@@ -3,6 +3,8 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const taskRouter = require('./routers/task');
+const { PORT } = process.env;
+
 
 //inicializar express
 const app = express();
@@ -19,6 +21,6 @@ app.use(taskRouter);
 
 
 //listering of server
-app.listen(app.get('port'), () => {
-    console.log('Server on port', app.get('port'));
+app.listen(PORT, () => {
+    console.log('Server on port', PORT);
 });
