@@ -5,7 +5,8 @@ const { petitions_get , petitions_get_login , petitions_get_cargo_vigigentes,
 const router = Router();
 
 
-router.get('/', petitions_get);
+//router.get('/', petitions_get);
+//router.get('/', petitions_get);
 //la ruta se llamara zlgz y tendra 2 parametros hara referencia a la consulta del login
 router.get('/zlgz/:doc/:passwd', petitions_get_login);
 //la ruta se llamara zcvg y tendra un parametro hara referencia a los cargos vigentes
