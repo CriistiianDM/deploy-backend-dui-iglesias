@@ -81,15 +81,15 @@ const petitions_get_cargo_vigigentes = async (req, res) => {
                 else if (Number(year_end[2]) === Number(year_now[2])) {
 
                     //verificar el mes
-                    if (Number(year_end[1]) > Number(year_now[1])) {
+                    if (Number(year_end[0]) > Number(year_now[0])) {
                         // tiene viginte el cargo pero proximo a vencer
                         console.log('no entro papa');
                         categoria_vigente += (`${(answer4.rows[0]).name},`);
                     }
-                    else if (Number(year_end[1]) === Number(year_now[1])) {
+                    else if (Number(year_end[0]) === Number(year_now[0])) {
 
                         //verificar el dia
-                        if (Number(year_end[0]) > Number(year_now[0])) {
+                        if (Number(year_end[1]) > Number(year_now[1])) {
                             //tiene viginte el cargo pero proximo a vencer
                             categoria_vigente += `${(answer4.rows[0]).name},`
                         }
