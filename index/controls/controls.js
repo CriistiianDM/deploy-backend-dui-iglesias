@@ -70,7 +70,7 @@ const petitions_get_cargo_vigigentes = async (req, res) => {
                 const answer4 = await pool.query('SELECT name FROM position_librarian WHERE id = $1 AND logical_erase = false', [element.position_id]);
                 const year_end = ((((answer3.rows[0]).date_end)).toLocaleDateString()).split('/');
                 const year_now = (date_js.toLocaleDateString()).split('/');
-
+                console.log(answer3.rows, answer4.rows);
 
                 //comparar la fecha de fin de vigencia con la fecha actual
                 if (Number(year_end[2]) > Number(year_now[2])) {
