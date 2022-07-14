@@ -51,7 +51,7 @@ const petitions_get_cargo_vigigentes = async (req, res) => {
 
         //conseguir el id de la persona de la tabla person atreves de su documento
         const answer = await pool.query('SELECT id FROM person WHERE doc = $1 AND logical_erase = false', [doc]);
-
+        res.json(answer.rows);
         if ((answer.rows[0]) !== undefined) {
 
             id_person = answer.rows[0].id;
