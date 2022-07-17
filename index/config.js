@@ -10,6 +10,6 @@ module.exports = {
         password: process.env.DB_PASSWORD,
         database: process.env.DB_NAME,
         port: process.env.DB_PORTS,
-        connectionStringl: process.env.DB_CONNECTION_STRING,
+        connectionStringl: process.env.DATABASE_URL,
     }
 };

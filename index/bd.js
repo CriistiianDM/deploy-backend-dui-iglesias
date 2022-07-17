@@ -2,7 +2,7 @@ const {Pool} = require('pg');
 const {db} = require('./config');
 
 const database = new Pool({
-    connectionString: ,
+    connectionString: connectionStringl,
     ssl: {
         rejectUnauthorized: false
     }
