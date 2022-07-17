@@ -209,6 +209,7 @@ const petitions_get_user = async (req, res) => {
 
 }
 
+
 /**
   *  @author : cristian Duvan Machado <cristian.machado@correounivalle.edu.co>
   *  @decs  : get para mostrar todos los usuarios activos
@@ -229,13 +230,37 @@ const petitions_get_all_user_active = async (req, res) => {
 }
 
 
+/**
+  *  @author : cristian Duvan Machado <cristian.machado@correounivalle.edu.co>
+  *  @decs  : get para saber si el usuario ya existe
+*/
+const petitions_get_user_exist = async (req, res) => {
+
+    try {
+        //variables para capturar los parametros
+        const { doc } = req.params;
+        //consulta
+        const answer = await pool.query('SELECT doc FROM user_account WHERE doc = $1 AND logical_erase = false', [doc]);
+        console.log('req.body', answer);
+        //retonar la respuesta
+        res.json(answer.rows);
+        
+    } catch (error) {
+        console.log(error, 'error');        
+    }
+
+}
+
+
+
 module.exports = {
     petitions_get,
     petitions_get_login,
     petitions_get_cargo_vigigentes,
     petitions_put_periodo,
     petitions_get_user,
-    petitions_get_all_user_active
+    petitions_get_all_user_active,
+    petitions_get_user_exist
 }
 
 

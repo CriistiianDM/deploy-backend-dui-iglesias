@@ -1,6 +1,7 @@
 const { Router , application } = require('express');
 const { petitions_get , petitions_get_login , petitions_get_cargo_vigigentes,
-        petitions_put_periodo , petitions_get_user , petitions_get_all_user_active} = require('../controls/controls');
+        petitions_put_periodo , petitions_get_user , petitions_get_all_user_active, 
+        petitions_get_user_exist} = require('../controls/controls');
 
 const router = Router();
 
@@ -15,6 +16,8 @@ router.get('/zcvg/:doc', petitions_get_cargo_vigigentes);
 router.get('/znlp/:doc', petitions_get_user);
 //la ruta se llamara zaup 
 router.get('/zaup', petitions_get_all_user_active);
+//la ruta se llamara zsdcr y tendra un parametro hara referencia al documento del usuario
+router.get('/zsdcr/:doc', petitions_get_user_exist);
 //la ruta se llamara zuppt y tendra un parametro que sera el id del periodo para actualizar el periodo
 router.put('/zuppt/:id', petitions_put_periodo);
 
