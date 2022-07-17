@@ -252,6 +252,29 @@ const petitions_get_user_exist = async (req, res) => {
 }
 
 
+/**
+  *  @author : cristian Duvan Machado <cristian.machado@correounivalle.edu.co>
+  *  @decs  : get para saber si el email ya existe
+*/
+const petitions_get_email_exist = async (req, res) => {
+
+    try {
+
+        //variables para capturar los parametros
+        const { email } = req.params;
+        //consulta
+        const answer = await pool.query('SELECT email FROM person WHERE email = $1 AND logical_erase = false', [email]);
+        console.log('req.body', answer);
+        //retonar la respuesta
+        res.json(answer.rows);
+        
+        
+    } catch (error) {
+        console.log(error, 'error');
+    }
+
+}
+
 
 module.exports = {
     petitions_get,
@@ -260,7 +283,8 @@ module.exports = {
     petitions_put_periodo,
     petitions_get_user,
     petitions_get_all_user_active,
-    petitions_get_user_exist
+    petitions_get_user_exist,
+    petitions_get_email_exist
 }
 
 
