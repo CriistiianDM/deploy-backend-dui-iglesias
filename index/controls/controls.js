@@ -276,6 +276,51 @@ const petitions_get_email_exist = async (req, res) => {
 }
 
 
+/**
+  *  @author : cristian Duvan Machado <cristian.machado@correounivalle.edu.co>
+  *  @decs  : get para obtener los nombres de los paises,regiones y ciudades
+*/
+const petitions_get_all_country = async (req, res) => {
+    
+        try {
+    
+            const { id , consult } = req.params;
+
+            //consulta
+            if (id === '1') {
+
+                const answer = await pool.query('SELECT id , name FROM country');
+                console.log('req.body', answer);
+                //retonar la respuesta
+                res.json(answer.rows);
+
+            }
+            if (id === '2') {
+
+                const answer = await pool.query('SELECT id,name FROM region WHERE country_id = $1 AND logical_erase = false',[consult]);
+                console.log('req.body', answer);
+                //retonar la respuesta
+                res.json(answer.rows);
+
+            }
+            if (id === '3') {
+
+                const answer = await pool.query('SELECT id,name FROM city WHERE region_id = $1 AND logical_erase = false',[consult]);
+                console.log('req.body', answer);
+                //retonar la respuesta
+                res.json(answer.rows);
+
+            }
+
+                        
+            
+        } catch (error) {
+            console.log(error, 'error');
+        }
+    
+}
+
+
 module.exports = {
     petitions_get,
     petitions_get_login,
@@ -284,7 +329,8 @@ module.exports = {
     petitions_get_user,
     petitions_get_all_user_active,
     petitions_get_user_exist,
-    petitions_get_email_exist
+    petitions_get_email_exist,
+    petitions_get_all_country
 }
 
 
