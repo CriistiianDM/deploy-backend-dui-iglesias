@@ -362,20 +362,20 @@ const petitions_post_user = async (req, res) => {
                                                               first_last_name , second_last_name, birth_date , email , phone_1 , phone_2 , gender , type_person ,
                                                               id_user , place_birth , logical_erase,diretion) VALUES 
                                                               (nextval('person_seq'), $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)`,
-            [doc, doc_type, doc_from, first_name, second_name, first_last_name, second_last_name, birth_date, email, phone_1, phone_2,gender,type_person,id_user,place_birth,false,address]);
+            [doc, doc_type, doc_from, first_name, second_name, first_last_name, second_last_name, birth_date, email, phone_1, phone_2, gender, type_person, id_user, place_birth, false, address]);
         //console.log('req.body', answer);
 
         const consult_2 = await pool.query(`SELECT id FROM person WHERE doc = $1 AND logical_erase = false`, [doc]);
         const id_person = consult_2.rows[0].id
 
         //insert a tabla person_eclesial
-        const answer3 =  await pool.query(`INSERT INTO person_eclesial (id, person_id , baptism_date, baptism_place_id, holy_spirit_date, date_init_church, experience_json, id_church_now, logical_erase) VALUES (nextval('person_eclesial_seq'), $1, $2, $3, $4, $5, $6, $7, false)`, [id_person, baptism_date, baptism_place_id, holy_spirit_date, date_init_church, experience_json, id_church_now]);
-        
+        const answer3 = await pool.query(`INSERT INTO person_eclesial (id, person_id , baptism_date, baptism_place_id, holy_spirit_date, date_init_church, experience_json, id_church_now, logical_erase) VALUES (nextval('person_eclesial_seq'), $1, $2, $3, $4, $5, $6, $7, false)`, [id_person, baptism_date, baptism_place_id, holy_spirit_date, date_init_church, experience_json, id_church_now]);
+
         const answer4 = await pool.query(`INSERT INTO person_position (id, name , person_id , position_id, period_id , id_group ,logical_erase) VALUES (nextval('person_position_seq'), 'creyente', $1, 1, 1,NULL, false)`, [id_person]);
-        
+
         //retonar la respuesta
         res.json(answer4.rows);
-       
+
 
     } catch (error) {
         console.log(error, 'error');
@@ -383,6 +383,34 @@ const petitions_post_user = async (req, res) => {
     }
 
 }
+
+
+
+/**
+  *  @author : cristian Duvan Machado <cristian.machado@correounivalle.edu.co>
+  *  @decs  : get para obtener toda la informacion de un usuario
+*/
+
+const petitions_get_info_user = async (req, res) => {
+
+    try {
+
+        //variables para capturar los parametros
+        const { doc } = req.params;
+        //consulta
+        const answer = await pool.query(`SELECT * FROM person AS t1 JOIN person_eclesial AS t2 ON t1.id = t2.person_id WHERE t1.logical_erase = false AND t2.logical_erase = false AND t1.doc = $1 `, [doc]);
+        console.log('req.body', answer);
+        //retonar la respuesta
+        res.json(answer.rows);
+    }
+    catch (error) {
+        console.log(error, 'error');
+    }
+
+}
+
+
+
 
 /*
  doc: '',
@@ -420,7 +448,8 @@ module.exports = {
     petitions_get_user_exist,
     petitions_get_email_exist,
     petitions_get_all_country,
-    petitions_post_user
+    petitions_post_user,
+    petitions_get_info_user
 }
 
 

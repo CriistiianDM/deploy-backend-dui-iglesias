@@ -2,7 +2,7 @@ const { Router , application } = require('express');
 const { petitions_get , petitions_get_login , petitions_get_cargo_vigigentes,
         petitions_put_periodo , petitions_get_user , petitions_get_all_user_active, 
         petitions_get_user_exist, petitions_get_email_exist , petitions_get_all_country, 
-        petitions_post_user} = require('../controls/controls');
+        petitions_post_user, petitions_get_info_user} = require('../controls/controls');
 
 const router = Router();
 
@@ -25,6 +25,8 @@ router.get('/zsdemp/:email', petitions_get_email_exist);
 router.get('/zcrcp/:id/:consult', petitions_get_all_country);
 //la routa se llamara zincrp y sera un post para guardar un nuevo usuario
 router.post('/zincrp', petitions_post_user);
+//la routa se llamara zadtus y sera un get para traer la informacion de un usuario
+router.get('/zadtus/:doc', petitions_get_info_user);
 //la ruta se llamara zuppt y tendra un parametro que sera el id del periodo para actualizar el periodo
 router.put('/zuppt/:id', petitions_put_periodo);
 
