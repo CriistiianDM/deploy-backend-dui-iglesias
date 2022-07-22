@@ -370,8 +370,11 @@ const petitions_post_user = async (req, res) => {
 
         //insert a tabla person_eclesial
         const answer3 =  await pool.query(`INSERT INTO person_eclesial (id, person_id , baptism_date, baptism_place_id, holy_spirit_date, date_init_church, experience_json, id_church_now, logical_erase) VALUES (nextval('person_eclesial_seq'), $1, $2, $3, $4, $5, $6, $7, false)`, [id_person, baptism_date, baptism_place_id, holy_spirit_date, date_init_church, experience_json, id_church_now]);
+        
+        const answer4 = await pool.query(`INSERT INTO person_position (id, name , person_id , position_id, period_id , id_group ,logical_erase) VALUES (nextval('person_position_seq'), 'creyente', $1, 1, 1,NULL, false)`, [id_person]);
+        
         //retonar la respuesta
-        res.json(answer3.rows);
+        res.json(answer4.rows);
        
 
     } catch (error) {
