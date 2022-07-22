@@ -363,7 +363,7 @@ const petitions_post_user = async (req, res) => {
                                                               id_user , place_birth , logical_erase,diretion) VALUES 
                                                               (nextval('person_seq'), $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)`,
             [doc, doc_type, doc_from, first_name, second_name, first_last_name, second_last_name, birth_date, email, phone_1, phone_2,gender,type_person,id_user,place_birth,false,address]);
-        console.log('req.body', answer);
+        //console.log('req.body', answer);
 
         const consult_2 = await pool.query(`SELECT id FROM person WHERE doc = $1 AND logical_erase = false`, [doc]);
         const id_person = consult_2.rows[0].id
