@@ -369,10 +369,10 @@ const petitions_post_user = async (req, res) => {
         const id_person = consult_2.rows[0].id
 
         //insert a tabla person_eclesial
-        const answer3 =  await pool.query(`INSERT INTO person_eclesial (id, id_person, baptism_date, baptism_place_id, holy_spirit_date, date_init_church, experience_json, id_church_now, logical_erase) VALUES (nextval('person_eclesial_seq'), $1, $2, $3, $4, $5, $6, $7, false)`, [id_person, baptism_date, baptism_place_id, holy_spirit_date, date_init_church, experience_json, id_church_now]);
+        const answer3 =  await pool.query(`INSERT INTO person_eclesial (id, person_id , baptism_date, baptism_place_id, holy_spirit_date, date_init_church, experience_json, id_church_now, logical_erase) VALUES (nextval('person_eclesial_seq'), $1, $2, $3, $4, $5, $6, $7, false)`, [id_person, baptism_date, baptism_place_id, holy_spirit_date, date_init_church, experience_json, id_church_now]);
         //retonar la respuesta
         res.json(answer3.rows);
-
+       
 
     } catch (error) {
         console.log(error, 'error');
