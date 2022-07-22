@@ -417,11 +417,11 @@ const petitions_post_file = async (req, res) => {
         try {
     
             //variables para capturar los parametros
-            const { id_person, file_name, file_type, file_path } = req.body;
+           // const { id_person, file_name, file_type, file_path } = req.body;
     
             //insertar usuario
             //const answer = await pool.query(`INSERT INTO person_file (id, person_id, file_name, file_type, file_path, logical_erase) VALUES (nextval('person_file_seq'), $1, $2, $3, $4, false)`, [id_person, file_name, file_type, file_path]);
-            console.log('req.body', answer);
+            //console.log('req.body', answer);
             //retonar la respuesta
             res.send('todo bien');
     
