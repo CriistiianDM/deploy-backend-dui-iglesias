@@ -5,7 +5,7 @@ const { petitions_get, petitions_get_login, petitions_get_cargo_vigigentes,
     petitions_post_user, petitions_get_info_user, petitions_post_file } = require('../controls/controls');
 
 const multer = require('multer');
-const mimeTypes = require('mimeTypes');
+const mimeTypes = require('mime-types');
 const router = Router();
 
 
