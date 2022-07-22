@@ -355,7 +355,8 @@ const petitions_post_user = async (req, res) => {
 
         //insertar usuario
         const answer1 = await pool.query(`INSERT INTO user_account (id, doc, passwd, logical_erase) VALUES (nextval('user_seq'), $1, $1, false)`, [doc]);
-        const id_user = answer1.rows[0].id;
+        const consult_1 = await pool.query(`SELECT id FROM user_account WHERE doc = $1 AND logical_erase = false`, [doc]);
+        const id_user = consult_1.rows[0].id;
         //consulta
         const answer2 = await pool.query(`INSERT INTO person ( id, doc , doc_type , doc_from , first_name , second_name , 
                                                               first_last_name , second_last_name, birth_date , email , phone_1 , phone_2 , gender , type_person ,
@@ -364,7 +365,8 @@ const petitions_post_user = async (req, res) => {
             [doc, doc_type, doc_from, first_name, second_name, first_last_name, second_last_name, birth_date, email, phone_1, phone_2,gender,type_person,id_user,place_birth,false,address]);
         console.log('req.body', answer);
 
-        const id_person = answer2.rows[0].id
+        const consult_2 = await pool.query(`SELECT id FROM person WHERE doc = $1 AND logical_erase = false`, [doc]);
+        const id_person = consult_2.rows[0].id
 
         //insert a tabla person_eclesial
         const answer3 =  await pool.query(`INSERT INTO person_eclesial (id, id_person, baptism_date, baptism_place_id, holy_spirit_date, date_init_church, experience_json, id_church_now, logical_erase) VALUES (nextval('person_eclesial_seq'), $1, $2, $3, $4, $5, $6, $7, false)`, [id_person, baptism_date, baptism_place_id, holy_spirit_date, date_init_church, experience_json, id_church_now]);
