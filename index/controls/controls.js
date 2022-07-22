@@ -244,9 +244,9 @@ const petitions_get_user_exist = async (req, res) => {
         console.log('req.body', answer);
         //retonar la respuesta
         res.json(answer.rows);
-        
+
     } catch (error) {
-        console.log(error, 'error');        
+        console.log(error, 'error');
     }
 
 }
@@ -267,8 +267,8 @@ const petitions_get_email_exist = async (req, res) => {
         console.log('req.body', answer);
         //retonar la respuesta
         res.json(answer.rows);
-        
-        
+
+
     } catch (error) {
         console.log(error, 'error');
     }
@@ -281,44 +281,128 @@ const petitions_get_email_exist = async (req, res) => {
   *  @decs  : get para obtener los nombres de los paises,regiones y ciudades
 */
 const petitions_get_all_country = async (req, res) => {
-    
-        try {
-    
-            const { id , consult } = req.params;
 
-            //consulta
-            if (id === '1') {
+    try {
 
-                const answer = await pool.query('SELECT id , name FROM country');
-                console.log('req.body', answer);
-                //retonar la respuesta
-                res.json(answer.rows);
+        const { id, consult } = req.params;
 
-            }
-            if (id === '2') {
+        //consulta
+        if (id === '1') {
 
-                const answer = await pool.query('SELECT id,name FROM region WHERE country_id = $1 AND logical_erase = false',[consult]);
-                console.log('req.body', answer);
-                //retonar la respuesta
-                res.json(answer.rows);
+            const answer = await pool.query('SELECT id , name FROM country');
+            console.log('req.body', answer);
+            //retonar la respuesta
+            res.json(answer.rows);
 
-            }
-            if (id === '3') {
-
-                const answer = await pool.query('SELECT id,name FROM city WHERE region_id = $1 AND logical_erase = false',[consult]);
-                console.log('req.body', answer);
-                //retonar la respuesta
-                res.json(answer.rows);
-
-            }
-
-                        
-            
-        } catch (error) {
-            console.log(error, 'error');
         }
-    
+        if (id === '2') {
+
+            const answer = await pool.query('SELECT id,name FROM region WHERE country_id = $1 AND logical_erase = false', [consult]);
+            console.log('req.body', answer);
+            //retonar la respuesta
+            res.json(answer.rows);
+
+        }
+        if (id === '3') {
+
+            const answer = await pool.query('SELECT id,name FROM city WHERE region_id = $1 AND logical_erase = false', [consult]);
+            console.log('req.body', answer);
+            //retonar la respuesta
+            res.json(answer.rows);
+
+        }
+
+
+
+    } catch (error) {
+        console.log(error, 'error');
+    }
+
 }
+
+
+/**
+  *  @author : cristian Duvan Machado <cristian.machado@correounivalle.edu.co>
+  *  @decs  : post para crear un usuario
+*/
+const petitions_post_user = async (req, res) => {
+
+    try {
+
+        //variables para capturar los parametros
+        const { doc,
+            doc_from,
+            doc_type,
+            first_name,
+            second_name,
+            first_last_name,
+            second_last_name,
+            birth_date,
+            email,
+            phone_1,
+            phone_2,
+            gender,
+            address,
+            type_person,
+            place_birth,
+            baptism_date,
+            baptism_place_id,
+            holy_spirit_date,
+            date_init_church,
+            experience_json,
+            id_church_now
+        } = req.body;
+
+        //insertar usuario
+        const answer1 = await pool.query(`INSERT INTO user_account (id, doc, passwd, logical_erase) VALUES (nextval('user_seq'), $1, $1, false)`, [doc]);
+        const id_user = answer1.rows[0].id;
+        //consulta
+        const answer2 = await pool.query(`INSERT INTO person ( id, doc , doc_type , doc_from , first_name , second_name , 
+                                                              first_last_name , second_last_name, birth_date , email , phone_1 , phone_2 , gender , type_person ,
+                                                              id_user , place_birth , logical_erase,diretion) VALUES 
+                                                              (nextval('person_seq'), $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)`,
+            [doc, doc_type, doc_from, first_name, second_name, first_last_name, second_last_name, birth_date, email, phone_1, phone_2,gender,type_person,id_user,place_birth,false,address]);
+        console.log('req.body', answer);
+
+        const id_person = answer2.rows[0].id
+
+        //insert a tabla person_eclesial
+        const answer3 =  await pool.query(`INSERT INTO person_eclesial (id, id_person, baptism_date, baptism_place_id, holy_spirit_date, date_init_church, experience_json, id_church_now, logical_erase) VALUES (nextval('person_eclesial_seq'), $1, $2, $3, $4, $5, $6, $7, false)`, [id_person, baptism_date, baptism_place_id, holy_spirit_date, date_init_church, experience_json, id_church_now]);
+        //retonar la respuesta
+        res.json(answer3.rows);
+
+
+    } catch (error) {
+        console.log(error, 'error');
+
+    }
+
+}
+
+/*
+ doc: '',
+        doc_from: 'colombia',
+        doc_type: '',
+        first_name: '',
+        second_name: '',
+        first_last_name: '',
+        second_last_name: '',
+        birth_date: '',
+        email: '',
+        phone_1: '',
+        phone_2: '',
+        gender: '',
+        address: '',
+        type_person: 'normal',
+        place_birth: '',
+        baptism_date: '',
+        baptism_place_id: '',
+        holy_spirit_date: '',
+        date_init_church: '',
+        experience_json: '',
+        id_church_now:
+*/
+
 
 
 module.exports = {
@@ -330,7 +414,8 @@ module.exports = {
     petitions_get_all_user_active,
     petitions_get_user_exist,
     petitions_get_email_exist,
-    petitions_get_all_country
+    petitions_get_all_country,
+    petitions_post_user
 }
 
 
