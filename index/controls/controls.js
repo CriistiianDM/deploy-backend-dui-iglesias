@@ -390,7 +390,6 @@ const petitions_post_user = async (req, res) => {
   *  @author : cristian Duvan Machado <cristian.machado@correounivalle.edu.co>
   *  @decs  : get para obtener toda la informacion de un usuario
 */
-
 const petitions_get_info_user = async (req, res) => {
 
     try {
@@ -409,7 +408,29 @@ const petitions_get_info_user = async (req, res) => {
 
 }
 
-
+/**
+  *  @author : cristian Duvan Machado <cristian.machado@correounivalle.edu.co>
+  *  @decs  : post para guaradar archivos
+*/
+const petitions_post_file = async (req, res) => {
+    
+        try {
+    
+            //variables para capturar los parametros
+            const { id_person, file_name, file_type, file_path } = req.body;
+    
+            //insertar usuario
+            //const answer = await pool.query(`INSERT INTO person_file (id, person_id, file_name, file_type, file_path, logical_erase) VALUES (nextval('person_file_seq'), $1, $2, $3, $4, false)`, [id_person, file_name, file_type, file_path]);
+            console.log('req.body', answer);
+            //retonar la respuesta
+            res.send('todo bien');
+    
+        } catch (error) {
+            console.log(error, 'error');
+    
+        }
+    
+}
 
 
 /*

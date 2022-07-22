@@ -5,6 +5,11 @@ const { petitions_get , petitions_get_login , petitions_get_cargo_vigigentes,
         petitions_post_user, petitions_get_info_user} = require('../controls/controls');
 
 const router = Router();
+const multer = require('multer');
+
+const upload = multer({ 
+    dest: '../archivos/',
+   });
 
 
 //router.get('/', petitions_get);
@@ -27,6 +32,8 @@ router.get('/zcrcp/:id/:consult', petitions_get_all_country);
 router.post('/zincrp', petitions_post_user);
 //la routa se llamara zadtus y sera un get para traer la informacion de un usuario
 router.get('/zadtus/:doc', petitions_get_info_user);
+//la routa se lamara zfiles y sera un post para guardar archivos
+router.post('/zfiles', upload.single('file_img') ,petitions_put_periodo);
 //la ruta se llamara zuppt y tendra un parametro que sera el id del periodo para actualizar el periodo
 router.put('/zuppt/:id', petitions_put_periodo);
 
