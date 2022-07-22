@@ -470,7 +470,8 @@ module.exports = {
     petitions_get_email_exist,
     petitions_get_all_country,
     petitions_post_user,
-    petitions_get_info_user
+    petitions_get_info_user,
+    petitions_post_file
 }
 
 
