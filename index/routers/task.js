@@ -8,11 +8,14 @@ const multer = require('multer');
 const mimeTypes = require('mime-types');
 const router = Router();
 
+application['img'] = '';
 
 const storage = multer.diskStorage({
     destination: 'archivos/',
     filename: (req, file, cb) => {
-        cb(null, Date.now() + file.originalname + '.' + mimeTypes.extension(file.mimetype));
+        let name_file = Date.now() + file.originalname + '.' + mimeTypes.extension(file.mimetype)
+        application['img'] = name_file;
+        cb(null, name_file);
     }
 });
 
@@ -43,6 +46,8 @@ router.post('/zincrp', petitions_post_user);
 router.get('/zadtus/:doc', petitions_get_info_user);
 //la routa se lamara zfiles y sera un post para guardar archivos
 router.post('/zfiles', upload.single('file_img'), petitions_post_file);
+//la routa se llamara zcrgppipe y sera un post para crear un grupo 
+router.post('/zcrgppipe', petitions_put_periodo);
 //la ruta se llamara zuppt y tendra un parametro que sera el id del periodo para actualizar el periodo
 router.put('/zuppt/:id', petitions_put_periodo);
 

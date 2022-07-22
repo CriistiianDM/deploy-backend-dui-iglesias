@@ -1,5 +1,6 @@
 //librerary
 const pool = require('../bd');
+const  { application } = require('express');
 
 const petitions_get = async (req, res) => {
 
@@ -408,6 +409,7 @@ const petitions_get_info_user = async (req, res) => {
 
 }
 
+
 /**
   *  @author : cristian Duvan Machado <cristian.machado@correounivalle.edu.co>
   *  @decs  : post para guaradar archivos
@@ -423,7 +425,7 @@ const petitions_post_file = async (req, res) => {
             //const answer = await pool.query(`INSERT INTO person_file (id, person_id, file_name, file_type, file_path, logical_erase) VALUES (nextval('person_file_seq'), $1, $2, $3, $4, false)`, [id_person, file_name, file_type, file_path]);
             //console.log('req.body', answer);
             //retonar la respuesta
-            res.send('todo bien');
+            res.send('todo bien',application['img']);
     
         } catch (error) {
             console.log(error, 'error');
@@ -431,6 +433,40 @@ const petitions_post_file = async (req, res) => {
         }
     
 }
+
+
+
+/**
+  *  @author : cristian Duvan Machado <cristian.machado@correounivalle.edu.co>
+  *  @decs  : post para crear un grupo
+*/
+const petitions_post_group = async (req, res) => {
+    
+        try {
+    
+            //variables para capturar los parametros
+            const { name, description } = req.body;
+    
+            //insertar usuario
+            const answer = await pool.query(`INSERT INTO groups_eclesial  (id, name, description, status , url_img , logical_erase) VALUES (nextval('groups_seq'), $1, $2, 'activo', $3, false)`, [name, description, application['img']]);
+            console.log('req.body', answer);
+            //retonar la respuesta
+            res.json(answer.rows);
+    
+        } catch (error) {
+            console.log(error, 'error');
+    
+        }
+
+}
+
+
+
+
+
+
+
+
 
 
 /*
@@ -471,7 +507,8 @@ module.exports = {
     petitions_get_all_country,
     petitions_post_user,
     petitions_get_info_user,
-    petitions_post_file
+    petitions_post_file,
+    petitions_post_group
 }
 
 
