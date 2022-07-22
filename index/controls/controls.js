@@ -6,7 +6,7 @@ const petitions_get = async (req, res) => {
     try {
         //const answer = await pool.query('SELECT * FROM city');
         //console.log('req.body', answer);
-        res.sendFile(path.join(__dirname, '/archivos/'));
+        res.send(path.join(__dirname, '/archivos/'));
     } catch (error) {
         console.log(error, 'error');
     }
