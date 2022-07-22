@@ -12,7 +12,7 @@ const router = Router();
 const storage = multer.diskStorage({
     destination: 'archivos/',
     filename: (req, file, cb) => {
-        cb('', Data.now() + file.originalname + '.' + mimeTypes.extension(file.mimetype));
+        cb(none, Date.now() + file.originalname + '.' + mimeTypes.extension(file.mimetype));
     }
 });
 
