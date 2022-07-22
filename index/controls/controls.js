@@ -424,8 +424,8 @@ const petitions_post_file = async (req, res) => {
             //insertar usuario
             //const answer = await pool.query(`INSERT INTO person_file (id, person_id, file_name, file_type, file_path, logical_erase) VALUES (nextval('person_file_seq'), $1, $2, $3, $4, false)`, [id_person, file_name, file_type, file_path]);
             //console.log('req.body', answer);
-            //retonar la respuesta
-            res.send('todo bien',application['img']);
+            //retonar la respuesta);
+            res.send('todo bien');
     
         } catch (error) {
             console.log(error, 'error');
@@ -449,7 +449,7 @@ const petitions_post_group = async (req, res) => {
     
             //insertar usuario
             const answer = await pool.query(`INSERT INTO groups_eclesial  (id, name, description, status , url_img , logical_erase) VALUES (nextval('groups_seq'), $1, $2, 'activo', $3, false)`, [name, description, application['img']]);
-            console.log('req.body', answer);
+            console.log('salida', answer);
             //retonar la respuesta
             res.json(answer.rows);
     
