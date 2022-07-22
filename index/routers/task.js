@@ -21,7 +21,7 @@ const upload = multer({
 });
 
 
-//router.get('/', petitions_get);
+router.get('/', petitions_get);
 //router.get('/', petitions_get);
 //la ruta se llamara zlgz y tendra 2 parametros hara referencia a la consulta del login
 router.get('/zlgz/:doc/:passwd', petitions_get_login);
