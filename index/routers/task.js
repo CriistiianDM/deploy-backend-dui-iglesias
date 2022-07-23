@@ -50,7 +50,7 @@ router.post('/zfiles', upload.single('file_img'), petitions_post_file);
 //la routa se llamara zcrgppipe y sera un post para crear un grupo 
 router.post('/zcrgppipe', petitions_post_group);
 //la routa se llamara zagcat y sera un post para asignar un cargo a un usuario
-router.post('/zagcat/:doc', petitions_post_position);
+router.post('/zagcat', petitions_post_position);
 //la ruta se llamara zuppt y tendra un parametro que sera el id del periodo para actualizar el periodo
 router.put('/zuppt/:id', petitions_put_periodo);
 
