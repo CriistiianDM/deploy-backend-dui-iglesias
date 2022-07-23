@@ -475,7 +475,7 @@ const petitions_post_position = async (req, res) => {
         const id_person = answer.rows[0].id;
         console.log('id_person', id_person);
         const consult_1 = await pool.query(`INSERT INTO person_position (id, name , person_id , position_id, period_id , id_group ,logical_erase) VALUES (nextval('person_position_seq'), 'joven lider', $1 , 4 , 1,NULL, false)`, [id_person]);
-        
+        res.json(consult_1.rows);
         
      } catch (error) {
          console.log(error, 'error');
