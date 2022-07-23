@@ -462,8 +462,24 @@ const petitions_post_group = async (req, res) => {
 
 
 
+/**
+  *  @author : cristian Duvan Machado <cristian.machado@correounivalle.edu.co>
+  *  @decs  : post para asignar un cargo a un usuario
+*/
+const petitions_post_position = async (req, res) => {
 
+     try {
 
+        let { doc } = req.body;
+
+        const consult_1 = await pool.query(`INSERT INTO person_position (id, name , person_id , position_id, period_id , id_group ,logical_erase) VALUES (nextval('person_position_seq'), 'joven lider', $1 , 4 , 1,NULL, false)`, [doc]);
+        
+        
+     } catch (error) {
+         console.log(error, 'error');
+        
+     }
+}
 
 
 
@@ -508,7 +524,8 @@ module.exports = {
     petitions_post_user,
     petitions_get_info_user,
     petitions_post_file,
-    petitions_post_group
+    petitions_post_group,
+    petitions_post_position
 }
 
 
