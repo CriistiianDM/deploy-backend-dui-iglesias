@@ -77,7 +77,7 @@ const petitions_get_cargo_vigigentes = async (req, res) => {
             console.log('answer2', (answer2.rows).length, 'numero de cargos',typeof (answer2.rows));
             //recorrer el arreglo para obtener el tiempo de vigencia for each
             answer2.rows.forEach(async (element, index) => {
-
+                console.log(categoria_vigente, 'categoria_vigente parte inicia',index);
                 //consulta para obtener la fecha de fin de vigencia
                 const answer3 = await pool.query('SELECT date_end FROM periodo WHERE id = $1 AND logical_erase = false', [element.period_id]);
                 //consulta para obtener la categoria del cargo
@@ -132,21 +132,16 @@ const petitions_get_cargo_vigigentes = async (req, res) => {
                     console.log(categoria_vigente,index,index_answer2 - 1, 'final');
                     res.json(categoria_vigente);
                 }
-                console.log(categoria_vigente, 'categoria_vigente',index);
+
+                console.log(categoria_vigente, 'categoria_vigente parte final',index);
+
             });
 
-            //console.log(categoria_vigente, 'categoria_vigente 1');
-            //res.json((answer.rows)[0]);
-
+        }
+        else {
+            res.send('no tiene cargos');
         }
 
-        //categoria_vigente = categoria_vigente.substring(0, categoria_vigente.length - 1);
-
-        //consulta
-        //onst answer = await pool.query('SELECT count(*) FROM cargo WHERE doc = $1 AND logical_erase = false', [doc]);
-        //console.log('req.body',answer);
-        //retonar la respuesta
-        //console.log('answer', (answer.rows)[0]);
 
     } catch (error) {
         console.log(error, 'error');
