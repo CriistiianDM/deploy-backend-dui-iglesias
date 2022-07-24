@@ -125,7 +125,7 @@ const petitions_get_cargo_vigigentes = async (req, res) => {
                     vigencia_cargo_actuliazcion(element.period_id);
                 }
 
-
+                console.log(index === (index_answer2 - 1), 'parte media',index);
                 if (index === (index_answer2 - 1)) {
                     console.log(categoria_vigente,index,index_answer2 - 1, 'antes de enviarla');
                     categoria_vigente = `${categoria_vigente.substring(0, categoria_vigente.length - 1)}`;
