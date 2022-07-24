@@ -49,6 +49,7 @@ const petitions_get_cargoFaltantesUser = async (req, res)=>{
 }
 /**
   *  @author : cristian Duvan Machado <cristian.machado@correounivalle.edu.co>
+  *  TODO : PELIGRO NIVEL TUMBA SERVIDOR -- EL BUCLE VA A SU BOLA CON LA INTERACIONES
   *  @decs  : verificar cuantos cargos tiene vigentes el usuario
 */
 const petitions_get_cargo_vigigentes = async (req, res) => {
@@ -62,6 +63,7 @@ const petitions_get_cargo_vigigentes = async (req, res) => {
         let answer2;
         let categoria_vigente = '';
         let index_answer2 = 0;
+        let index = 0
 
         //conseguir el id de la persona de la tabla person atreves de su documento
         const answer = await pool.query('SELECT id FROM person WHERE doc = $1 AND logical_erase = false', [doc]);
@@ -74,10 +76,10 @@ const petitions_get_cargo_vigigentes = async (req, res) => {
             answer2 = await pool.query('SELECT period_id, position_id  FROM person_position WHERE person_id = $1 AND logical_erase = false', [id_person]);
             //guardar cuntos registros tiene la consulta
             index_answer2 = (answer2.rows).length;
-            console.log('answer2', (answer2.rows).length, typeof (answer2.rows));
+            console.log('answer2', (answer2.rows).length, 'numero de cargos',(answer2.rows));
             //recorrer el arreglo para obtener el tiempo de vigencia for each
-            answer2.rows.forEach(async (element, index) => {
-
+            answer2.rows.forEach(async (element) => {
+                console.log(categoria_vigente, 'categoria_vigente parte inicia',index);
                 //consulta para obtener la fecha de fin de vigencia
                 const answer3 = await pool.query('SELECT date_end FROM periodo WHERE id = $1 AND logical_erase = false', [element.period_id]);
                 //consulta para obtener la categoria del cargo
@@ -97,7 +99,7 @@ const petitions_get_cargo_vigigentes = async (req, res) => {
                     //verificar el mes
                     if (Number(year_end[0]) > Number(year_now[0])) {
                         // tiene viginte el cargo pero proximo a vencer
-                        console.log('no entro papa');
+                        console.log('no entro papa noel',categoria_vigente);
                         categoria_vigente += (`${(answer4.rows[0]).name},`);
                     }
                     else if (Number(year_end[0]) === Number(year_now[0])) {
@@ -125,26 +127,24 @@ const petitions_get_cargo_vigigentes = async (req, res) => {
                     vigencia_cargo_actuliazcion(element.period_id);
                 }
 
-
+                console.log(index === (index_answer2 - 1), 'parte media',index);
                 if (index === (index_answer2 - 1)) {
+                    console.log(categoria_vigente,index,index_answer2 - 1, 'antes de enviarla');
                     categoria_vigente = `${categoria_vigente.substring(0, categoria_vigente.length - 1)}`;
+                    console.log(categoria_vigente,index,index_answer2 - 1, 'final');
                     res.json(categoria_vigente);
                 }
-                console.log(categoria_vigente, 'categoria_vigente');
+
+                console.log(categoria_vigente, 'categoria_vigente parte final',index);
+                index++
+
             });
 
-            //console.log(categoria_vigente, 'categoria_vigente 1');
-            //res.json((answer.rows)[0]);
-
+        }
+        else {
+            res.send('no tiene cargos');
         }
 
-        //categoria_vigente = categoria_vigente.substring(0, categoria_vigente.length - 1);
-
-        //consulta
-        //onst answer = await pool.query('SELECT count(*) FROM cargo WHERE doc = $1 AND logical_erase = false', [doc]);
-        //console.log('req.body',answer);
-        //retonar la respuesta
-        //console.log('answer', (answer.rows)[0]);
 
     } catch (error) {
         console.log(error, 'error');
@@ -483,11 +483,11 @@ const petitions_post_position = async (req, res) => {
 
     try {
 
-        let { doc } = req.body;
+        let { doc,name_cargo,id_cargo } = req.body;
         const answer = await pool.query('SELECT id FROM person WHERE doc = $1 AND logical_erase = false', [doc]);
         const id_person = answer.rows[0].id;
         console.log('id_person', id_person);
-        const consult_1 = await pool.query(`INSERT INTO person_position (id, name , person_id , position_id, period_id , id_group ,logical_erase) VALUES (nextval('person_position_seq'), 'joven lider', $1 , 4 , 1,NULL, false)`, [id_person]);
+        const consult_1 = await pool.query(`INSERT INTO person_position (id, name , person_id , position_id, period_id , id_group ,logical_erase) VALUES (nextval('person_position_seq'), $2, $1 , $3 , 1,NULL, false)`, [id_person,name_cargo,id_cargo]);
         res.json(consult_1.rows);
 
     } catch (error) {
