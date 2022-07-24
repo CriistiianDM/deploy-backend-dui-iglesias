@@ -74,7 +74,7 @@ const petitions_get_cargo_vigigentes = async (req, res) => {
             answer2 = await pool.query('SELECT period_id, position_id  FROM person_position WHERE person_id = $1 AND logical_erase = false', [id_person]);
             //guardar cuntos registros tiene la consulta
             index_answer2 = (answer2.rows).length;
-            console.log('answer2', (answer2.rows).length, 'numero de cargos',typeof (answer2.rows));
+            console.log('answer2', (answer2.rows).length, 'numero de cargos',(answer2.rows));
             //recorrer el arreglo para obtener el tiempo de vigencia for each
             answer2.rows.forEach(async (element, index) => {
                 console.log(categoria_vigente, 'categoria_vigente parte inicia',index);
