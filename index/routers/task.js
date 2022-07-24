@@ -3,7 +3,7 @@ const { petitions_get, petitions_get_login, petitions_get_cargo_vigigentes,
     petitions_put_periodo, petitions_get_user, petitions_get_all_user_active,
     petitions_get_user_exist, petitions_get_email_exist, petitions_get_all_country,
     petitions_post_user, petitions_get_info_user, petitions_post_file, petitions_post_group ,
-    petitions_post_position} = require('../controls/controls');
+    petitions_post_position, petitions_get_jovenes_lideres} = require('../controls/controls');
 
 const multer = require('multer');
 const mimeTypes = require('mime-types');
@@ -53,8 +53,8 @@ router.post('/zcrgppipe', petitions_post_group);
 router.post('/zagcat', petitions_post_position);
 //la ruta se llamara zuppt y tendra un parametro que sera el id del periodo para actualizar el periodo
 router.put('/zuppt/:id', petitions_put_periodo);
-
-
+//la ruta se llamara zjlp y sera tipo get para traer todos los usuarios jovenes lideres
+router.get('/zjlp', petitions_get_jovenes_lideres);
 
 
 module.exports = router;
