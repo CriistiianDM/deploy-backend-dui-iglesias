@@ -34,8 +34,6 @@ router.get('/zlgz/:doc/:passwd', petitions_get_login);
 router.get('/zallcf/:doc',petitions_get_cargoFaltantesUser);
 //la ruta se llamara zcvg y tendra un parametro hara referencia a los cargos vigentes
 router.get('/zcvg/:doc', petitions_get_cargo_vigigentes);
-//la ruta se llamara zallc
-router.get('/zallc',petitions_get_all_NameCargos);
 //la ruta se llamara znlp y tendra un parametro hara referencia al documento del usuario
 router.get('/znlp/:doc', petitions_get_user);
 //la ruta se llamara zaup 
