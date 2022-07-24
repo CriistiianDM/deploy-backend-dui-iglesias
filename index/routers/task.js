@@ -3,7 +3,7 @@ const { petitions_get, petitions_get_login, petitions_get_cargo_vigigentes,
     petitions_put_periodo, petitions_get_user, petitions_get_all_user_active,
     petitions_get_user_exist, petitions_get_email_exist, petitions_get_all_country,
     petitions_post_user, petitions_get_info_user, petitions_post_file, petitions_post_group ,
-    petitions_post_position, petitions_get_jovenes_lideres} = require('../controls/controls');
+    petitions_post_position, petitions_get_jovenes_lideres,petitions_get_cargoFaltantesUser} = require('../controls/controls');
 
 const multer = require('multer');
 const mimeTypes = require('mime-types');
@@ -29,6 +29,8 @@ router.get('/', petitions_get);
 //router.get('/', petitions_get);
 //la ruta se llamara zlgz y tendra 2 parametros hara referencia a la consulta del login
 router.get('/zlgz/:doc/:passwd', petitions_get_login);
+//la ruta se llamara zallcf llama a todos los cargos faltantes de un usuario segun su documento
+router.get('/zallcf/:doc',petitions_get_cargoFaltantesUser);
 //la ruta se llamara zcvg y tendra un parametro hara referencia a los cargos vigentes
 router.get('/zcvg/:doc', petitions_get_cargo_vigigentes);
 //la ruta se llamara znlp y tendra un parametro hara referencia al documento del usuario

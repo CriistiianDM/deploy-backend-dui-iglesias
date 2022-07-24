@@ -32,7 +32,21 @@ const petitions_get_login = async (req, res) => {
         console.log(error, 'error');
     }
 }
+/**
+  *  @author : Juan Sebastian Camino Muñoz <juan.camino@correounivalle.edu.co>
+  *  @decs  : verificar cuantos cargos existen en la Base de datos que no tiene el usuario
+*/
+const petitions_get_cargoFaltantesUser = async (req, res)=>{
+    try {
+        //variables para capturar los parametros
+        const { doc } = req.params;
 
+        const answer = await pool.query('SELECT id,name FROM position_librarian WHERE id NOT IN(SELECT position_id FROM person_position WHERE person_id IN (SELECT id FROM person WHERE doc = $1 AND logical_erase = false))', [doc])
+        res.json(answer.rows);
+    } catch (error) {
+     console.log(error, 'error'); 
+    }
+}
 /**
   *  @author : cristian Duvan Machado <cristian.machado@correounivalle.edu.co>
   *  @decs  : verificar cuantos cargos tiene vigentes el usuario
@@ -551,7 +565,8 @@ module.exports = {
     petitions_post_file,
     petitions_post_group,
     petitions_post_position, 
-    petitions_get_jovenes_lideres
+    petitions_get_jovenes_lideres,
+    petitions_get_cargoFaltantesUser
 }
 
 
