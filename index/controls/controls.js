@@ -49,6 +49,7 @@ const petitions_get_cargoFaltantesUser = async (req, res)=>{
 }
 /**
   *  @author : cristian Duvan Machado <cristian.machado@correounivalle.edu.co>
+  *  TODO : PELIGRO NIVEL TUMBA SERVIDOR -- EL BUCLE VA A SU BOLA CON LA INTERACIONES
   *  @decs  : verificar cuantos cargos tiene vigentes el usuario
 */
 const petitions_get_cargo_vigigentes = async (req, res) => {
