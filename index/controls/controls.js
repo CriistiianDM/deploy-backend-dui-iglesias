@@ -62,6 +62,7 @@ const petitions_get_cargo_vigigentes = async (req, res) => {
         let answer2;
         let categoria_vigente = '';
         let index_answer2 = 0;
+        let index = 0
 
         //conseguir el id de la persona de la tabla person atreves de su documento
         const answer = await pool.query('SELECT id FROM person WHERE doc = $1 AND logical_erase = false', [doc]);
@@ -76,7 +77,7 @@ const petitions_get_cargo_vigigentes = async (req, res) => {
             index_answer2 = (answer2.rows).length;
             console.log('answer2', (answer2.rows).length, 'numero de cargos',(answer2.rows));
             //recorrer el arreglo para obtener el tiempo de vigencia for each
-            answer2.rows.forEach(async (element, index) => {
+            answer2.rows.forEach(async (element) => {
                 console.log(categoria_vigente, 'categoria_vigente parte inicia',index);
                 //consulta para obtener la fecha de fin de vigencia
                 const answer3 = await pool.query('SELECT date_end FROM periodo WHERE id = $1 AND logical_erase = false', [element.period_id]);
@@ -134,6 +135,7 @@ const petitions_get_cargo_vigigentes = async (req, res) => {
                 }
 
                 console.log(categoria_vigente, 'categoria_vigente parte final',index);
+                index++
 
             });
 
