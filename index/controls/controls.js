@@ -483,11 +483,11 @@ const petitions_post_position = async (req, res) => {
 
     try {
 
-        let { doc } = req.body;
+        let { doc,name_cargo,id_cargo } = req.body;
         const answer = await pool.query('SELECT id FROM person WHERE doc = $1 AND logical_erase = false', [doc]);
         const id_person = answer.rows[0].id;
         console.log('id_person', id_person);
-        const consult_1 = await pool.query(`INSERT INTO person_position (id, name , person_id , position_id, period_id , id_group ,logical_erase) VALUES (nextval('person_position_seq'), 'joven lider', $1 , 4 , 1,NULL, false)`, [id_person]);
+        const consult_1 = await pool.query(`INSERT INTO person_position (id, name , person_id , position_id, period_id , id_group ,logical_erase) VALUES (nextval('person_position_seq'), $2, $1 , $3 , 1,NULL, false)`, [id_person,name_cargo,id_cargo]);
         res.json(consult_1.rows);
 
     } catch (error) {
