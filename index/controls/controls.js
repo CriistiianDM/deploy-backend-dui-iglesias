@@ -131,7 +131,7 @@ const petitions_get_cargo_vigigentes = async (req, res) => {
                     console.log(categoria_vigente,index,index_answer2 - 1, 'final');
                     res.json(categoria_vigente);
                 }
-                console.log(categoria_vigente, 'categoria_vigente');
+                console.log(categoria_vigente, 'categoria_vigente',index);
             });
 
             //console.log(categoria_vigente, 'categoria_vigente 1');
