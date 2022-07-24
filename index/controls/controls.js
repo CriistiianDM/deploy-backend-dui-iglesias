@@ -128,6 +128,7 @@ const petitions_get_cargo_vigigentes = async (req, res) => {
 
                 if (index === (index_answer2 - 1)) {
                     categoria_vigente = `${categoria_vigente.substring(0, categoria_vigente.length - 1)}`;
+                    console.log(categoria_vigente, 'final');
                     res.json(categoria_vigente);
                 }
                 console.log(categoria_vigente, 'categoria_vigente');
