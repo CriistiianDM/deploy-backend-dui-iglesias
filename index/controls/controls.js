@@ -1,6 +1,6 @@
 //librerary
 const pool = require('../bd');
-const  { application } = require('express');
+const { application } = require('express');
 
 const petitions_get = async (req, res) => {
 
@@ -31,9 +31,20 @@ const petitions_get_login = async (req, res) => {
     } catch (error) {
         console.log(error, 'error');
     }
-
 }
+/**
+  *  @author : Juan Sebastian Camino Muñoz <juan.camino@correounivalle.edu.co>
+  *  @decs  : verificar cuantos cargos existen en la Base de datos
+*/
 
+const petitions_get_all_NameCargos = async (req, res)=>{
+    try {
+        const answer = await pool.query('SELECT name FROM position_librarian WHERE logical_erase =false')
+        res.json(answer.rows);
+    } catch (error) {
+     console.log(error, 'error'); 
+    }
+}
 /**
   *  @author : cristian Duvan Machado <cristian.machado@correounivalle.edu.co>
   *  @decs  : verificar cuantos cargos tiene vigentes el usuario
@@ -415,23 +426,23 @@ const petitions_get_info_user = async (req, res) => {
   *  @decs  : post para guaradar archivos
 */
 const petitions_post_file = async (req, res) => {
-    
-        try {
-    
-            //variables para capturar los parametros
-           // const { id_person, file_name, file_type, file_path } = req.body;
-    
-            //insertar usuario
-            //const answer = await pool.query(`INSERT INTO person_file (id, person_id, file_name, file_type, file_path, logical_erase) VALUES (nextval('person_file_seq'), $1, $2, $3, $4, false)`, [id_person, file_name, file_type, file_path]);
-            //console.log('req.body', answer);
-            //retonar la respuesta);
-            res.send('todo bien');
-    
-        } catch (error) {
-            console.log(error, 'error');
-    
-        }
-    
+
+    try {
+
+        //variables para capturar los parametros
+        // const { id_person, file_name, file_type, file_path } = req.body;
+
+        //insertar usuario
+        //const answer = await pool.query(`INSERT INTO person_file (id, person_id, file_name, file_type, file_path, logical_erase) VALUES (nextval('person_file_seq'), $1, $2, $3, $4, false)`, [id_person, file_name, file_type, file_path]);
+        //console.log('req.body', answer);
+        //retonar la respuesta);
+        res.send('todo bien');
+
+    } catch (error) {
+        console.log(error, 'error');
+
+    }
+
 }
 
 
@@ -441,22 +452,22 @@ const petitions_post_file = async (req, res) => {
   *  @decs  : post para crear un grupo
 */
 const petitions_post_group = async (req, res) => {
-    
-        try {
-    
-            //variables para capturar los parametros
-            const { name, description } = req.body;
-    
-            //insertar usuario
-            const answer = await pool.query(`INSERT INTO groups_eclesial  (id, name, description, status , url_img , logical_erase) VALUES (nextval('groups_seq'), $1, $2, 'activo', $3, false)`, [name, description, application['img']]);
-            console.log('salida', answer);
-            //retonar la respuesta
-            res.json(answer.rows);
-    
-        } catch (error) {
-            console.log(error, 'error');
-    
-        }
+
+    try {
+
+        //variables para capturar los parametros
+        const { name, description } = req.body;
+
+        //insertar usuario
+        const answer = await pool.query(`INSERT INTO groups_eclesial  (id, name, description, status , url_img , logical_erase) VALUES (nextval('groups_seq'), $1, $2, 'activo', $3, false)`, [name, description, application['img']]);
+        console.log('salida', answer);
+        //retonar la respuesta
+        res.json(answer.rows);
+
+    } catch (error) {
+        console.log(error, 'error');
+
+    }
 
 }
 
@@ -468,7 +479,7 @@ const petitions_post_group = async (req, res) => {
 */
 const petitions_post_position = async (req, res) => {
 
-     try {
+    try {
 
         let { doc } = req.body;
         const answer = await pool.query('SELECT id FROM person WHERE doc = $1 AND logical_erase = false', [doc]);
@@ -476,15 +487,39 @@ const petitions_post_position = async (req, res) => {
         console.log('id_person', id_person);
         const consult_1 = await pool.query(`INSERT INTO person_position (id, name , person_id , position_id, period_id , id_group ,logical_erase) VALUES (nextval('person_position_seq'), 'joven lider', $1 , 4 , 1,NULL, false)`, [id_person]);
         res.json(consult_1.rows);
-        
-     } catch (error) {
-         console.log(error, 'error');
-        
-     }
+
+    } catch (error) {
+        console.log(error, 'error');
+
+    }
 }
 
 
+/**
+  *  @author : Juan Felipe Osorio Zapata <juan.felipe.osorio@correounivalle.edu.co>
+  *  @decs  : get para obtener los jovenes lideres que no pertenezcan a un grupo
+  * 
+*/
 
+const petitions_get_jovenes_lideres = async (req, res) => {
+
+    try {
+
+        //variables para capturar los parametros
+        const { id_group } = req.params;
+        //consulta
+        const answer = await pool.query(`SELECT  first_name , first_last_name , doc,name , t1.id FROM person AS t1
+        JOIN person_position AS t2 ON t1.id = t2.person_id 
+        AND t2.logical_erase = false AND t1.logical_erase = false
+        AND t2.position_id = 4  AND t2.id_group is null`);
+        console.log('req.body', answer);
+        //retonar la respuesta
+        res.json(answer.rows);
+
+    } catch (error) {
+        console.log(error, 'error');
+    }
+}
 
 
 /*
@@ -527,7 +562,9 @@ module.exports = {
     petitions_get_info_user,
     petitions_post_file,
     petitions_post_group,
-    petitions_post_position
+    petitions_post_position, 
+    petitions_get_jovenes_lideres,
+    petitions_get_all_NameCargos
 }
 
 
