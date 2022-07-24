@@ -74,7 +74,7 @@ const petitions_get_cargo_vigigentes = async (req, res) => {
             answer2 = await pool.query('SELECT period_id, position_id  FROM person_position WHERE person_id = $1 AND logical_erase = false', [id_person]);
             //guardar cuntos registros tiene la consulta
             index_answer2 = (answer2.rows).length;
-            console.log('answer2', (answer2.rows).length, typeof (answer2.rows));
+            console.log('answer2', (answer2.rows).length, 'numero de cargos',typeof (answer2.rows));
             //recorrer el arreglo para obtener el tiempo de vigencia for each
             answer2.rows.forEach(async (element, index) => {
 
@@ -97,7 +97,7 @@ const petitions_get_cargo_vigigentes = async (req, res) => {
                     //verificar el mes
                     if (Number(year_end[0]) > Number(year_now[0])) {
                         // tiene viginte el cargo pero proximo a vencer
-                        console.log('no entro papa');
+                        console.log('no entro papa noel',categoria_vigente);
                         categoria_vigente += (`${(answer4.rows[0]).name},`);
                     }
                     else if (Number(year_end[0]) === Number(year_now[0])) {
