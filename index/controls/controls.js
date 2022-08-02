@@ -367,6 +367,28 @@ const petitions_post_user = async (req, res) => {
             id_church_now
         } = req.body;
 
+        console.log(doc,
+            doc_from,
+            doc_type,
+            first_name,
+            second_name,
+            first_last_name,
+            second_last_name,
+            birth_date,
+            email,
+            phone_1,
+            phone_2,
+            gender,
+            address,
+            type_person,
+            place_birth,
+            baptism_date,
+            baptism_place_id,
+            holy_spirit_date,
+            date_init_church,
+            experience_json,
+            id_church_now ,'prueba');
+
         //insertar usuario
         const answer1 = await pool.query(`INSERT INTO user_account (id, doc, passwd, logical_erase) VALUES (nextval('user_seq'), $1, $1, false)`, [doc]);
         const consult_1 = await pool.query(`SELECT id FROM user_account WHERE doc = $1 AND logical_erase = false`, [doc]);
