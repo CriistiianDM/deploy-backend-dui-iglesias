@@ -410,7 +410,7 @@ const petitions_post_user = async (req, res) => {
         const answer4 = await pool.query(`INSERT INTO person_position (id, name , person_id , position_id, period_id , id_group ,logical_erase) VALUES (nextval('person_position_seq'), 'creyente', $1, 1, 1,NULL, false)`, [id_person]);
 
         //retonar la respuesta
-        res.json(answer4.rows);
+        res.json(answer4.status);
 
 
     } catch (error) {
