@@ -13,7 +13,7 @@ const app = express();
 app.set('port',  4500);
 
 //verfificar como llegan los datos
-async function verificar (req, res, next)  {
+const verificar = async (req, res, next) => {
     console.log( await req.body,await req.params,'holi verificar');
     next();
 }
@@ -23,10 +23,7 @@ async function verificar (req, res, next)  {
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(cors());
-app.all('/zsdcr/:doc',async (req, res, next) => {
-    console.log('holi middleware', await req.body, req.params, req.query);
-    next();
-});
+app.all('/zincrp', verificar);
 app.use(taskRouter);
 
 
