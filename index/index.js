@@ -12,11 +12,18 @@ const app = express();
 //settings
 app.set('port',  4500);
 
+//verfificar como llegan los datos
+const verificar = (req, res, next) => {
+    console.log(req.body,'holi verificar');
+    next();
+}
+
 
 //middleware
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(cors());
+app.use(verificar);
 app.use(taskRouter);
 
 
