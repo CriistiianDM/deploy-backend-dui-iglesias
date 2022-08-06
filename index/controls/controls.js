@@ -411,7 +411,7 @@ const petitions_post_user = async (req, res) => {
 
         console.log('req.body', answer4);
         //retonar la respuesta
-        res.json(answer4.rowCount);
+        res.json({ message: 'ok' });
 
 
     } catch (error) {
