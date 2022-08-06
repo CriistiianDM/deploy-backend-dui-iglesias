@@ -23,7 +23,7 @@ async function verificar (req, res, next)  {
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(cors());
-app.use(async (req, res, next) => {
+app.all('/zsdcr/:doc',async (req, res, next) => {
     console.log('holi middleware', await req.body, req.params, req.query);
     next();
 });
