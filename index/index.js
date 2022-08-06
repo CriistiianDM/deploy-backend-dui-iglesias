@@ -14,7 +14,7 @@ app.set('port',  4500);
 
 //verfificar como llegan los datos
 async function verificar (req, res, next)  {
-    console.log(req.body,req.params,'holi verificar');
+    console.log( await req.body,await req.params,'holi verificar');
     next();
 }
 
