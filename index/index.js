@@ -23,8 +23,9 @@ async function verificar (req, res, next)  {
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(cors());
-app.use(taskRouter);
 app.use(verificar);
+app.use(taskRouter);
+
 
 
 //listering of server
