@@ -26,7 +26,7 @@ const verificar = async (req, res, next) => {
 
 //middleware
 app.use(express.json());
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
+app.use(morgan('short'));
 app.use(cors());
 app.use(only_petitions_fronted);
 app.all('/zincrp', verificar);
