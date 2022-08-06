@@ -14,7 +14,7 @@ app.set('port',  4500);
 
 //verfificar como llegan los datos
 const verificar = (req, res, next) => {
-    console.log(req.body,'holi verificar');
+    console.log(req.body,req.params,'holi verificar');
     next();
 }
 
