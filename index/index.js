@@ -13,7 +13,7 @@ const app = express();
 app.set('port',  4500);
 
 //verfificar como llegan los datos
-const verificar = (req, res, next) => {
+const verificar = async (req, res, next) => {
     console.log(req.body,req.params,'holi verificar');
     next();
 }
@@ -23,7 +23,7 @@ const verificar = (req, res, next) => {
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(cors());
-app.use(verificar());
+app.use(verificar);
 app.use(taskRouter);
 
 
