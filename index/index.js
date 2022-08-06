@@ -24,7 +24,7 @@ app.use(express.json());
 app.use(morgan('dev'));
 app.use(cors());
 app.use(async (req, res, next) => {
-    console.log('holi middleware', await req.body, req.params);
+    console.log('holi middleware', await req.body, req.params, req.query);
     next();
 });
 app.use(taskRouter);
