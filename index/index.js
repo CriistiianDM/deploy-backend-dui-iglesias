@@ -22,7 +22,7 @@ const only_petitions_fronted = async (req, res, next) => {
         next();
     }
     else {
-        res.status(401).send('no se puede acceder');
+        res.status(401).send('acceso denegado - a hackear a tu madre');
     }
    
 }
