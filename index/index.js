@@ -3,6 +3,7 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const taskRouter = require('./routers/task');
+const { only_petitions_fronted } = require('./middlewares/middleware');
 const { PORT } = process.env;
 
 
@@ -16,7 +17,7 @@ app.set('port',  4500);
    TODO: mañana hacer un archivo pa los middlewares y empezar por esta parte
    ? primer avance de seguridad para las peticiones y backedend
    ! no olvidar hacer una funcion de encriptacion para la clave de acceso para las peticiones y esta cambiaria automaticamente cada dia
-*/
+
 const only_petitions_fronted = async (req, res, next) => {
     console.log('holi verificar 12', (req.headers));
 
@@ -27,7 +28,7 @@ const only_petitions_fronted = async (req, res, next) => {
         res.status(401).send('acceso denegado');
     }
    
-}
+}*/
 
 //verfificar como llegan los datos
 const verificar = async (req, res, next) => {
