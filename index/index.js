@@ -17,7 +17,7 @@ const only_petitions_fronted = async (req, res, next) => {
     //console.log('holi verificar',req);
     //ver kheaders de la peticion
     console.log('holi verificar 12', (req.headers).origin);
-    console.log(req.ip,'holi only_petitions',(req.rawHeaders)[15],req.rawHeaders,req['Symbol(kHeaders)']);
+    console.log('holi only_petitions',req);
     next();
 }
 
