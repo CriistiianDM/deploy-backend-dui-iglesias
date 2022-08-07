@@ -3,6 +3,8 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const taskRouter = require('./routers/task');
+const { only_petitions_fronted,
+        verificar_post_cr_user  } = require('./middleware/middleware');
 const { PORT } = process.env;
 
 
@@ -12,16 +14,6 @@ const app = express();
 //settings
 app.set('port',  4500);
 
-const only_petitions_fronted = async (req, res, next) => {
-    console.log(req.ip,'holi only_petitions');
-    next();
-}
-
-//verfificar como llegan los datos
-const verificar = async (req, res, next) => {
-    console.log( await req.body,await req.params,'holi verificar');
-    next();
-}
 
 
 //middleware
@@ -29,7 +21,7 @@ app.use(express.json());
 app.use(morgan('short'));
 app.use(cors());
 app.use(only_petitions_fronted);
-app.all('/zincrp', verificar);
+app.all('/zincrp', verificar_post_cr_user);
 app.use(taskRouter);
 
 
