@@ -13,10 +13,7 @@ const app = express();
 app.set('port',  4500);
 
 const only_petitions_fronted = async (req, res, next) => {
-    //ver el host de donde viene la peticion
-    //console.log('holi verificar',req);
-    //ver kheaders de la peticion
-    console.log('holi verificar 12', (req.headers).origin);
+    console.log('holi verificar 12', (req.headers));
 
     if ((req.headers).origin === 'https://iglesia-pentacostal-colombia.vercel.app') {
         next();
