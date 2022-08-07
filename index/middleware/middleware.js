@@ -26,7 +26,7 @@ const verificar_post_cr_user = async (req, res, next) => {
     const state = getNameState();
 
     (state).map((item) => {
-        console.log(item.data, validateFormate(((req.body)[item.data]),item.type) ,'trending toping');
+        console.log(item.data, validateFormate(((req.body)[item.data]),item.type) ,'trending toping',((req.body)[item.data]));
     });
 
     next();
