@@ -8,7 +8,7 @@ const only_petitions_fronted = async (req, res, next) => {
     console.log('holi verificar 12', (req.headers));
 
     if ((req.headers).origin === 'https://iglesia-pentacostal-colombia.vercel.app' ||
-        (req.headers).origin === 'localhost:3000') {
+        (req.headers).origin === 'http://localhost:3000') {
         next();
     }
     else {
