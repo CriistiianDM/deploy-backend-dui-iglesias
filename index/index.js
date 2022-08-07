@@ -18,7 +18,14 @@ const only_petitions_fronted = async (req, res, next) => {
     //ver kheaders de la peticion
     console.log('holi verificar 12', (req.headers).origin);
     console.log('holi only_petitions',(req.on)[0]);
-    next();
+    
+    if ((req.headers).origin === 'https://iglesia-pentacostal-colombia.vercel.app/') {
+        next();
+    }
+    else {
+        res.status(401).send('no se puede acceder');
+    }
+   
 }
 
 //verfificar como llegan los datos
