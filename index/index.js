@@ -15,7 +15,7 @@ app.set('port',  4500);
 const only_petitions_fronted = async (req, res, next) => {
     //ver el host de donde viene la peticion
     //console.log('holi verificar',req);
-    console.log(req.ip,'holi only_petitions',(req.rawHeaders)[15]);
+    console.log(req.ip,'holi only_petitions',(req.rawHeaders)[15],req.rawHeaders);
     next();
 }
 
