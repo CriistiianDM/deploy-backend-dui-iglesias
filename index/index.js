@@ -3,7 +3,7 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const taskRouter = require('./routers/task');
-const { only_petitions_fronted } = require('./middlewares/middleware');
+const { only_petitions_fronted } = require('./middleware/middleware');
 const { PORT } = process.env;
 
 
