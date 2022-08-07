@@ -24,12 +24,20 @@ const only_petitions_fronted = async (req, res, next) => {
 const verificar_post_cr_user = async (req, res, next) => {
     console.log(req.body, req.params, 'holi verificar');
     const state = getNameState();
+    let index = 0;
 
     (state).map((item) => {
         console.log(item.data, validateFormate(((req.body)[item.data]),item.type) ,'trending toping',((req.body)[item.data]));
+        if (!validateFormate(((req.body)[item.data]),item.type)) {
+           res.json({ message: 'error en el formato de los datos' });
+        }else {
+            index++;
+        }
     });
 
-    next();
+    if (index === state.length) {
+        next();
+    }
 }
 
 
