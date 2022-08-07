@@ -17,7 +17,7 @@ const only_petitions_fronted = async (req, res, next) => {
     //console.log('holi verificar',req);
     //ver kheaders de la peticion
     console.log('holi verificar 12', (req.headers).origin);
-    console.log('holi only_petitions',req.on);
+    console.log('holi only_petitions',(req.on)[0]);
     next();
 }
 
