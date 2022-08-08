@@ -23,12 +23,12 @@ const only_petitions_fronted = async (req, res, next) => {
   *  @decs  : middelware para validar que los datos de la peticion sean correctos
 */
 const verificar_post_cr_user = async (req, res, next) => {
-    console.log(req.body, req.params, 'holi verificar');
+   
     const state = getNameState();
     let index = 0;
 
     (state).map((item) => {
-        console.log(item.data, validateFormate(((req.body)[item.data]),item.type) ,'trending toping',((req.body)[item.data]));
+       
         if (!validateFormate(((req.body)[item.data]),item.type)) {
            res.json({ message: 'error en el formato de los datos' });
         }else {
@@ -36,7 +36,7 @@ const verificar_post_cr_user = async (req, res, next) => {
         }
     });
 
-    console.log(index, 'index', state.length);
+    
     if (index === state.length) {
         next();
     }
@@ -80,8 +80,8 @@ function validateFormate(e, type) {
     //expresssion regular 
     var regex = {
         '0': /^[0-9]{9,15}$/,
-        '1': /^[aA-zZ]{3,50}$/,
-        '2': /^[aA-zZ]{2}$/,
+        '1': /^[a-zA-Z]{3,50}$/,
+        '2': /^[a-zA-Z]{2}$/,
         '3': /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/,
         '4': /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/,
         '5': /^[a-zA-Z]$/,
