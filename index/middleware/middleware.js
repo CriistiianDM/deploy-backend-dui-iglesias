@@ -80,6 +80,32 @@ const verificar_post_cr_group = async (req, res, next) => {
 }
 
 
+/**
+  *  @author : cristian Duvan Machado <cristian.machado@correounivalle.edu.co>
+  *  @decs  : middelware para validar que los campos de la peticion sean correctos para la asignacion de cargo
+  *
+*/
+const verificar_post_cr_cargo = async (req, res, next) => {
+
+    const state = get_name_state_cargo();
+    let index = 0;
+
+    (state).map((item) => {
+       
+        if (!validateFormate(((req.body)[item.data]),item.type)) {
+           res.json({ message: 'error en el formato de los datos' });
+        }else {
+            index++;
+        }
+    });
+
+    
+    if (index === state.length) {
+        next();
+    }
+
+}
+
 /*
   ------- funciones complementarias -------
 */
@@ -163,10 +189,27 @@ function get_name_state() {
   }
 
 
+/**
+  *  @author : cristian Duvan Machado <cristian.machado@correounivalle.edu.co>
+  *  @decs  : retornar el nombre de state a cambiar
+*/
+function get_name_state_cargo() {
+    
+    const state = [
+        {'data': 'doc' , 'type': 0},
+        {'data': 'name_cargo' , 'type': 10},
+        {'data': 'id_cargo', 'type': 7},
+    ]
+    
+    return state;
+    
+}
+
 
 //exportar el middelware
 module.exports = {
     only_petitions_fronted,
     verificar_post_cr_user,
-    verificar_post_cr_group
+    verificar_post_cr_group,
+    verificar_post_cr_cargo
 }
