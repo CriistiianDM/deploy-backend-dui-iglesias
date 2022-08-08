@@ -433,7 +433,7 @@ const petitions_post_file = async (req, res) => {
 
     try {
 
-        res.send('todo bien');
+        res.json({ message: 'ok' });
 
     } catch (error) {
         console.log(error, 'error');
