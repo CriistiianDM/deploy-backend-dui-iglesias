@@ -367,27 +367,6 @@ const petitions_post_user = async (req, res) => {
             id_church_now
         } = req.body;
 
-        console.log(doc,
-            doc_from,
-            doc_type,
-            first_name,
-            second_name,
-            first_last_name,
-            second_last_name,
-            birth_date,
-            email,
-            phone_1,
-            phone_2,
-            gender,
-            address,
-            type_person,
-            place_birth,
-            baptism_date,
-            baptism_place_id,
-            holy_spirit_date,
-            date_init_church,
-            experience_json,
-            id_church_now ,'prueba');
 
         //insertar usuario
         const answer1 = await pool.query(`INSERT INTO user_account (id, doc, passwd, logical_erase) VALUES (nextval('user_seq'), $1, $1, false)`, [doc]);
@@ -454,13 +433,6 @@ const petitions_post_file = async (req, res) => {
 
     try {
 
-        //variables para capturar los parametros
-        // const { id_person, file_name, file_type, file_path } = req.body;
-
-        //insertar usuario
-        //const answer = await pool.query(`INSERT INTO person_file (id, person_id, file_name, file_type, file_path, logical_erase) VALUES (nextval('person_file_seq'), $1, $2, $3, $4, false)`, [id_person, file_name, file_type, file_path]);
-        //console.log('req.body', answer);
-        //retonar la respuesta);
         res.send('todo bien');
 
     } catch (error) {
@@ -537,8 +509,6 @@ const petitions_get_jovenes_lideres = async (req, res) => {
 
     try {
 
-        //variables para capturar los parametros
-        const { id_group } = req.params;
         //consulta
         const answer = await pool.query(`SELECT  first_name , first_last_name , doc,name , t1.id FROM person AS t1
         JOIN person_position AS t2 ON t1.id = t2.person_id 
@@ -554,31 +524,26 @@ const petitions_get_jovenes_lideres = async (req, res) => {
 }
 
 
-/*
- doc: '',
-        doc_from: 'colombia',
-        doc_type: '',
-        first_name: '',
-        second_name: '',
-        first_last_name: '',
-        second_last_name: '',
-        birth_date: '',
-        email: '',
-        phone_1: '',
-        phone_2: '',
-        gender: '',
-        address: '',
-        type_person: 'normal',
-        place_birth: '',
-        baptism_date: '',
-        baptism_place_id: '',
-        holy_spirit_date: '',
-        date_init_church: '',
-        experience_json: '',
-        id_church_now:
+
+/**
+  *  @author : cristian Duvan Machado <cristian.machado@correounivalle.edu.co>
+  *  @decs  : get para obtener los nombres de los grupos
 */
+const petitions_get_group_exist = async (req, res) => {
+    try {
+   
+        const { name } = req.params;
 
+        //consulta
+        const answer = await pool.query(`SELECT name FROM groups_eclesial WHERE name = $1 logical_erase = false`, [name]);
 
+        //retonar la respuesta
+        res.json(answer.rows);
+
+    } catch (error) {
+        console.log(error, 'error');
+    }
+}
 
 module.exports = {
     petitions_get,
@@ -596,7 +561,8 @@ module.exports = {
     petitions_post_group,
     petitions_post_position, 
     petitions_get_jovenes_lideres,
-    petitions_get_cargoFaltantesUser
+    petitions_get_cargoFaltantesUser,
+    petitions_get_group_exist
 
 }
 
