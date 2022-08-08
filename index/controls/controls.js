@@ -535,7 +535,7 @@ const petitions_get_group_exist = async (req, res) => {
         const { name } = req.params;
 
         //consulta
-        const answer = await pool.query(`SELECT name FROM groups_eclesial WHERE name = $1 logical_erase = false`, [name]);
+        const answer = await pool.query(`SELECT name FROM groups_eclesial WHERE name = $1 AND logical_erase = false`, [name]);
 
         //retonar la respuesta
         res.json(answer.rows);
