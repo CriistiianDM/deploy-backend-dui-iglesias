@@ -43,6 +43,25 @@ const verificar_post_cr_user = async (req, res, next) => {
 }
 
 
+/**
+  *  @author : cristian Duvan Machado <cristian.machado@correounivalle.edu.co>
+  *  @decs  : middelware para validar que los datos de la peticion crear grupo sean correctos
+  *
+*/
+const verificar_post_cr_group = async (req, res, next) => {
+
+    try {
+        next();
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+/*
+  ------- funciones complementarias -------
+*/
+
 
 /**
   *  @author : cristian Duvan Machado <cristian.machado@correounivalle.edu.co>
@@ -107,5 +126,6 @@ function validateFormate(e, type) {
 //exportar el middelware
 module.exports = {
     only_petitions_fronted,
-    verificar_post_cr_user
+    verificar_post_cr_user,
+    verificar_post_cr_group
 }

@@ -4,7 +4,8 @@ const morgan = require('morgan');
 const cors = require('cors');
 const taskRouter = require('./routers/task');
 const { only_petitions_fronted,
-        verificar_post_cr_user  } = require('./middleware/middleware');
+        verificar_post_cr_user,
+        verificar_post_cr_group  } = require('./middleware/middleware');
 const { PORT } = process.env;
 
 
@@ -22,6 +23,7 @@ app.use(morgan('short'));
 app.use(cors());
 app.use(only_petitions_fronted);
 app.all('/zincrp', verificar_post_cr_user);
+app.all('/zcrgppipe', verificar_post_cr_group);
 app.use(taskRouter);
 
 
