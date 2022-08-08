@@ -51,7 +51,29 @@ const verificar_post_cr_user = async (req, res, next) => {
 const verificar_post_cr_group = async (req, res, next) => {
 
     try {
-        next();
+        const state = get_name_state();
+        let index = 0;
+        let index_aux = 0;
+    
+        (state).map((item) => {
+           
+            if (!validateFormate(((req.body)[item.data]),item.type) && ((req.body)[item.data]) != '') {
+               res.json({ message: 'error en el formato de los datos' });
+            }
+
+            if (index_aux === 0 && validateFormate(((req.body)[item.data]),item.type)||
+               index_aux === 3 && validateFormate(((req.body)[item.data]),item.type)) {
+                index++;
+            }
+
+            index_aux++;
+        });
+    
+        
+        if (index === (state.length - 2 )) {
+            next();
+        }
+
     } catch (error) {
         console.log(error);
     }
@@ -108,6 +130,8 @@ function validateFormate(e, type) {
         '7': /^[0-9]{1,5}$/,
         '8': /^{[0-9-aA-zZ:,"\s{}]*}$/,
         '9': /^[0-9]{7,15}$/,
+        '10': /^[a-zA-Z\s]{3,50}$/,
+        '11': /^[0-9-aA-zZ\s\/:.]+$/,
     }
 
     //validar el formato
@@ -120,6 +144,23 @@ function validateFormate(e, type) {
 
 }
 
+
+/**
+  *  @author : cristian Duvan Machado <cristian.machado@correounivalle.edu.co>
+  *  @decs  : retornar el nombre de state a cambiar
+*/
+function get_name_state() {
+
+    const state = [
+      {'data': 'name' , 'type': 10},
+      {'data': 'description' , 'type': 10},
+      {'data': 'img_data' , 'type': 11},
+      {'data': 'id_person', 'type': 7},
+    ]
+  
+    return state;
+  
+  }
 
 
 
