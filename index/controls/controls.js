@@ -459,13 +459,12 @@ const petitions_post_group = async (req, res) => {
         const answer = await pool.query(`INSERT INTO groups_eclesial  (id, name, description, status , url_img , logical_erase) VALUES (nextval('groups_seq'), $1, $2, 'activo', $3, false)`, [name, description, application['img']]);
         const comsult_id_group = await pool.query(`SELECT id FROM groups_eclesial WHERE name = $1 AND logical_erase = false`, [name]);
         const id_group = comsult_id_group.rows[0].id;
-        console.log(id_group,'sebas mirala')
         const answer2 = await pool.query(`INSERT INTO person_group (id, person_id, groups_id ,position_id ,status,logical_erase) VALUES (nextval('person_group_seq'), $1, $2, 4 ,'A', false)`, [id_person, id_group]);
 
 
         console.log('salida', answer);
         //retonar la respuesta
-        res.json(answer2.rows);
+        res.json({ message: 'ok' });
 
     } catch (error) {
         console.log(error, 'error');
