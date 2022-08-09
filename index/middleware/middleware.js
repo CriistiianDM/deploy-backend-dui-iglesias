@@ -1,11 +1,14 @@
 
+const { generateToken } = require('./../_____/_____');
+
+
 /**
   *  @author : cristian Duvan Machado <cristian.machado@correounivalle.edu.co>
   *  !no olvidar hacer la funcion de encriptacion para validar el token de seguridad
   *  @decs  : middelware para validar que solo se puedan ingresar peticiones desde el frontend
 */
 const only_petitions_fronted = async (req, res, next) => {
-    console.log('holi verificar 12', (req.headers));
+    console.log('holi verificar 12', (req.headers),generateToken(),(req.headers).token);
 
     if ((req.headers).origin === 'https://iglesia-pentacostal-colombia.vercel.app' ||
         (req.headers).origin === 'http://localhost:3000') {
@@ -105,6 +108,7 @@ const verificar_post_cr_cargo = async (req, res, next) => {
     }
 
 }
+
 
 /*
   ------- funciones complementarias -------
