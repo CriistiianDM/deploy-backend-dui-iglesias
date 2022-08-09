@@ -8,7 +8,7 @@ const { generateToken } = require('./../_____/_____');
   *  @decs  : middelware para validar que solo se puedan ingresar peticiones desde el frontend
 */
 const only_petitions_fronted = async (req, res, next) => {
-    console.log('holi verificar 12', (req.headers),generateToken(),(req.headers).token);
+    console.log('holi verificar 12', (req.headers),generateToken(),(req.headers)['sec-protocol-init']);
 
     if ((req.headers).origin === 'https://iglesia-pentacostal-colombia.vercel.app' ||
         (req.headers).origin === 'http://localhost:3000') {
