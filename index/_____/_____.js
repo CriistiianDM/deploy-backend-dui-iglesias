@@ -5,12 +5,10 @@
   *  TODO: toca dejar lac claves predeterminadas por cuestiones de tiempo
   *  @decs  : funcion que genera un token de seguridad para las peticiones ajax
 */
-const generateToken = () => {
+const generateToken = (token_param) => {
 
-    //obetener la hora de colombia
-    const date = new Date();
-    console.log(date,date.getUTCDay());
-    const day = date.getDate();
+    const day = (token_param).substring(token_param.length - 1);
+    console.log(day);
     const password_token = ((token_month[day]).split('|'));
     let token = '';
 
