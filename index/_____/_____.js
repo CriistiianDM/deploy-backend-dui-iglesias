@@ -8,6 +8,7 @@
 const generateToken = () => {
 
     const date = new Date();
+    console.log(date);
     const day = date.getDate();
     const password_token = ((token_month[day]).split('|'));
     let token = '';
