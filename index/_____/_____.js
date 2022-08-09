@@ -8,8 +8,8 @@
 const generateToken = () => {
 
     //obetener la hora de colombia
-    const date = new Date(utc);
-    console.log(date,date.getDate());
+    const date = new Date();
+    console.log(date,date.getUTCDay());
     const day = date.getDate();
     const password_token = ((token_month[day]).split('|'));
     let token = '';
