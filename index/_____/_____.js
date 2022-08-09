@@ -5,7 +5,7 @@
 */
 const generateToken = (token_param) => {
 
-    if (token_param.length > 0) {
+    if (token_param !== undefined) {
     // sacar la ultima letra del token
     let day = token_param.substring(token_param.length - 1);
     const password_token = ((token_month[day]).split('|'));
