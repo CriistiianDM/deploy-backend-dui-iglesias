@@ -13,12 +13,13 @@ const only_petitions_fronted = async (req, res, next) => {
     if ((req.headers).origin === 'https://iglesia-pentacostal-colombia.vercel.app' ||
         (req.headers).origin === 'http://localhost:3000') {
 
-        if (generateToken((req.headers).authorization)) {
+       /* if (generateToken((req.headers).authorization)) {
             next();
         }
         else {
             res.status(401).send('acceso denegado');
-        }
+        }*/
+        next();
     }
     else {
         res.status(401).send('acceso denegado');
