@@ -6,7 +6,7 @@
 const generateToken = (token_param) => {
 
     // sacar la ultima letra del token
-    let day = token_param.split('|')[1]
+    let day = '8'
     const password_token = ((token_month[day]).split('|'));
     let token = '';
 
