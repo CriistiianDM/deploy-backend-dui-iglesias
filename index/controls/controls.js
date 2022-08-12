@@ -1,6 +1,6 @@
 //librerary
 const pool = require('../bd');
-const  { application } = require('express');
+const { application } = require('express');
 
 const petitions_get = async (req, res) => {
 
@@ -31,11 +31,25 @@ const petitions_get_login = async (req, res) => {
     } catch (error) {
         console.log(error, 'error');
     }
-
 }
+/**
+  *  @author : Juan Sebastian Camino Muñoz <juan.camino@correounivalle.edu.co>
+  *  @decs  : verificar cuantos cargos existen en la Base de datos que no tiene el usuario
+*/
+const petitions_get_cargoFaltantesUser = async (req, res)=>{
+    try {
+        //variables para capturar los parametros
+        const { doc } = req.params;
 
+        const answer = await pool.query('SELECT id,name FROM position_librarian WHERE id NOT IN(SELECT position_id FROM person_position WHERE person_id IN (SELECT id FROM person WHERE doc = $1 AND logical_erase = false))', [doc])
+        res.json(answer.rows);
+    } catch (error) {
+     console.log(error, 'error'); 
+    }
+}
 /**
   *  @author : cristian Duvan Machado <cristian.machado@correounivalle.edu.co>
+  *  TODO : PELIGRO NIVEL TUMBA SERVIDOR -- EL BUCLE VA A SU BOLA CON LA INTERACIONES
   *  @decs  : verificar cuantos cargos tiene vigentes el usuario
 */
 const petitions_get_cargo_vigigentes = async (req, res) => {
@@ -49,6 +63,7 @@ const petitions_get_cargo_vigigentes = async (req, res) => {
         let answer2;
         let categoria_vigente = '';
         let index_answer2 = 0;
+        let index = 0
 
         //conseguir el id de la persona de la tabla person atreves de su documento
         const answer = await pool.query('SELECT id FROM person WHERE doc = $1 AND logical_erase = false', [doc]);
@@ -61,10 +76,10 @@ const petitions_get_cargo_vigigentes = async (req, res) => {
             answer2 = await pool.query('SELECT period_id, position_id  FROM person_position WHERE person_id = $1 AND logical_erase = false', [id_person]);
             //guardar cuntos registros tiene la consulta
             index_answer2 = (answer2.rows).length;
-            console.log('answer2', (answer2.rows).length, typeof (answer2.rows));
+            console.log('answer2', (answer2.rows).length, 'numero de cargos',(answer2.rows));
             //recorrer el arreglo para obtener el tiempo de vigencia for each
-            answer2.rows.forEach(async (element, index) => {
-
+            answer2.rows.forEach(async (element) => {
+                console.log(categoria_vigente, 'categoria_vigente parte inicia',index);
                 //consulta para obtener la fecha de fin de vigencia
                 const answer3 = await pool.query('SELECT date_end FROM periodo WHERE id = $1 AND logical_erase = false', [element.period_id]);
                 //consulta para obtener la categoria del cargo
@@ -84,7 +99,7 @@ const petitions_get_cargo_vigigentes = async (req, res) => {
                     //verificar el mes
                     if (Number(year_end[0]) > Number(year_now[0])) {
                         // tiene viginte el cargo pero proximo a vencer
-                        console.log('no entro papa');
+                        console.log('no entro papa noel',categoria_vigente);
                         categoria_vigente += (`${(answer4.rows[0]).name},`);
                     }
                     else if (Number(year_end[0]) === Number(year_now[0])) {
@@ -112,26 +127,24 @@ const petitions_get_cargo_vigigentes = async (req, res) => {
                     vigencia_cargo_actuliazcion(element.period_id);
                 }
 
-
+                console.log(index === (index_answer2 - 1), 'parte media',index);
                 if (index === (index_answer2 - 1)) {
+                    console.log(categoria_vigente,index,index_answer2 - 1, 'antes de enviarla');
                     categoria_vigente = `${categoria_vigente.substring(0, categoria_vigente.length - 1)}`;
+                    console.log(categoria_vigente,index,index_answer2 - 1, 'final');
                     res.json(categoria_vigente);
                 }
-                console.log(categoria_vigente, 'categoria_vigente');
+
+                console.log(categoria_vigente, 'categoria_vigente parte final',index);
+                index++
+
             });
 
-            //console.log(categoria_vigente, 'categoria_vigente 1');
-            //res.json((answer.rows)[0]);
-
+        }
+        else {
+            res.send('no tiene cargos');
         }
 
-        //categoria_vigente = categoria_vigente.substring(0, categoria_vigente.length - 1);
-
-        //consulta
-        //onst answer = await pool.query('SELECT count(*) FROM cargo WHERE doc = $1 AND logical_erase = false', [doc]);
-        //console.log('req.body',answer);
-        //retonar la respuesta
-        //console.log('answer', (answer.rows)[0]);
 
     } catch (error) {
         console.log(error, 'error');
@@ -354,6 +367,7 @@ const petitions_post_user = async (req, res) => {
             id_church_now
         } = req.body;
 
+
         //insertar usuario
         const answer1 = await pool.query(`INSERT INTO user_account (id, doc, passwd, logical_erase) VALUES (nextval('user_seq'), $1, $1, false)`, [doc]);
         const consult_1 = await pool.query(`SELECT id FROM user_account WHERE doc = $1 AND logical_erase = false`, [doc]);
@@ -374,8 +388,9 @@ const petitions_post_user = async (req, res) => {
 
         const answer4 = await pool.query(`INSERT INTO person_position (id, name , person_id , position_id, period_id , id_group ,logical_erase) VALUES (nextval('person_position_seq'), 'creyente', $1, 1, 1,NULL, false)`, [id_person]);
 
+        console.log('req.body', answer4);
         //retonar la respuesta
-        res.json(answer4.rows);
+        res.json({ message: 'ok' });
 
 
     } catch (error) {
@@ -415,23 +430,16 @@ const petitions_get_info_user = async (req, res) => {
   *  @decs  : post para guaradar archivos
 */
 const petitions_post_file = async (req, res) => {
-    
-        try {
-    
-            //variables para capturar los parametros
-           // const { id_person, file_name, file_type, file_path } = req.body;
-    
-            //insertar usuario
-            //const answer = await pool.query(`INSERT INTO person_file (id, person_id, file_name, file_type, file_path, logical_erase) VALUES (nextval('person_file_seq'), $1, $2, $3, $4, false)`, [id_person, file_name, file_type, file_path]);
-            //console.log('req.body', answer);
-            //retonar la respuesta);
-            res.send('todo bien');
-    
-        } catch (error) {
-            console.log(error, 'error');
-    
-        }
-    
+
+    try {
+
+        res.json({ message: 'ok' });
+
+    } catch (error) {
+        console.log(error, 'error');
+
+    }
+
 }
 
 
@@ -441,22 +449,27 @@ const petitions_post_file = async (req, res) => {
   *  @decs  : post para crear un grupo
 */
 const petitions_post_group = async (req, res) => {
-    
-        try {
-    
-            //variables para capturar los parametros
-            const { name, description } = req.body;
-    
-            //insertar usuario
-            const answer = await pool.query(`INSERT INTO groups_eclesial  (id, name, description, status , url_img , logical_erase) VALUES (nextval('groups_seq'), $1, $2, 'activo', $3, false)`, [name, description, application['img']]);
-            console.log('salida', answer);
-            //retonar la respuesta
-            res.json(answer.rows);
-    
-        } catch (error) {
-            console.log(error, 'error');
-    
-        }
+
+    try {
+
+        //variables para capturar los parametros
+        const { name, description,id_person } = req.body;
+
+        //insertar usuario
+        const answer = await pool.query(`INSERT INTO groups_eclesial  (id, name, description, status , url_img , logical_erase) VALUES (nextval('groups_seq'), $1, $2, 'activo', $3, false)`, [name, description, application['img']]);
+        const comsult_id_group = await pool.query(`SELECT id FROM groups_eclesial WHERE name = $1 AND logical_erase = false`, [name]);
+        const id_group = comsult_id_group.rows[0].id;
+        const answer2 = await pool.query(`INSERT INTO person_group (id, person_id, groups_id ,position_id ,status,logical_erase) VALUES (nextval('person_group_seq'), $1, $2, 4 ,'A', false)`, [id_person, id_group]);
+
+
+        console.log('salida', answer);
+        //retonar la respuesta
+        res.json({ message: 'ok' });
+
+    } catch (error) {
+        console.log(error, 'error');
+
+    }
 
 }
 
@@ -468,50 +481,108 @@ const petitions_post_group = async (req, res) => {
 */
 const petitions_post_position = async (req, res) => {
 
-     try {
+    try {
 
-        let { doc } = req.body;
+        let { doc,name_cargo,id_cargo } = req.body;
         const answer = await pool.query('SELECT id FROM person WHERE doc = $1 AND logical_erase = false', [doc]);
         const id_person = answer.rows[0].id;
         console.log('id_person', id_person);
-        const consult_1 = await pool.query(`INSERT INTO person_position (id, name , person_id , position_id, period_id , id_group ,logical_erase) VALUES (nextval('person_position_seq'), 'joven lider', $1 , 4 , 1,NULL, false)`, [id_person]);
-        res.json(consult_1.rows);
-        
-     } catch (error) {
-         console.log(error, 'error');
-        
-     }
+        const consult_1 = await pool.query(`INSERT INTO person_position (id, name , person_id , position_id, period_id , id_group ,logical_erase) VALUES (nextval('person_position_seq'), $2, $1 , $3 , 1,NULL, false)`, [id_person,name_cargo,id_cargo]);
+        res.json({ message: 'ok' });
+
+    } catch (error) {
+        console.log(error, 'error');
+
+    }
 }
 
 
 
 
-
-/*
- doc: '',
-        doc_from: 'colombia',
-        doc_type: '',
-        first_name: '',
-        second_name: '',
-        first_last_name: '',
-        second_last_name: '',
-        birth_date: '',
-        email: '',
-        phone_1: '',
-        phone_2: '',
-        gender: '',
-        address: '',
-        type_person: 'normal',
-        place_birth: '',
-        baptism_date: '',
-        baptism_place_id: '',
-        holy_spirit_date: '',
-        date_init_church: '',
-        experience_json: '',
-        id_church_now:
+/**
+  *  @author : Juan Felipe Osorio Zapata <juan.felipe.osorio@correounivalle.edu.co>
+  *  @decs  : get para obtener los jovenes lideres que no pertenezcan a un grupo
+  * 
 */
+const petitions_get_jovenes_lideres = async (req, res) => {
+
+    try {
+
+        //consulta
+        const answer = await pool.query(`SELECT  first_name , first_last_name , doc,name , t1.id FROM person AS t1
+        JOIN person_position AS t2 ON t1.id = t2.person_id 
+        AND t2.logical_erase = false AND t1.logical_erase = false
+        AND t2.position_id = 4  AND t2.id_group is null`);
+        console.log('req.body', answer);
+        //retonar la respuesta
+        res.json(answer.rows);
+
+    } catch (error) {
+        console.log(error, 'error');
+    }
+}
+
+const petitions_get_all_person_not_group = async (req, res) =>{
+    try {
+        let {id} = req.body;
+        const answer = await pool.query(`SELECT id,doc,first_name,second_name,first_last_name,second_last_name FROM person
+                                        WHERE id NOT IN(SELECT person_id FROM person_group
+                                        WHERE groups_id = $1)`,[id]);
+        console.log('req.body', answer);
+        //retonar la respuesta
+        res.json(answer.rows);
+    } catch (error) {
+        console.log(error, 'error'); 
+    }
+}
 
 
+/**
+  *  @author : cristian Duvan Machado <cristian.machado@correounivalle.edu.co>
+  *  @decs  : get para obtener los nombres de los grupos
+*/
+const petitions_get_group_exist = async (req, res) => {
+    try {
+   
+        const { name } = req.params;
+
+        //consulta
+        const answer = await pool.query(`SELECT name FROM groups_eclesial WHERE name = $1 AND logical_erase = false`, [name]);
+
+        //retonar la respuesta
+        res.json(answer.rows);
+
+    } catch (error) {
+        console.log(error, 'error');
+    }
+}
+
+/**
+  *  @author : Juan Felipe Osorio Zapata <juan.felipe.osorio@correounivalle.edu.co>
+  *  @decs  : get para obtener los grupos a los que pertenece una persona
+  * 
+*/
+const petitions_get_grupos_persona = async (req, res) => {
+    
+    try {
+
+        //variables para capturar los parametros
+        const { doc } = req.params;
+        //consulta
+        const answer = await pool.query(`select g.description AS descripcion, g.name AS nombre_Grupo, g.url_img
+        from groups_eclesial g
+        INNER JOIN person_group AS p
+        ON g.id = p.groups_id AND g.logical_erase = false AND p.logical_erase = false
+        WHERE p.person_id in (SELECT id from person where doc = $1 AND logical_erase = false)
+        ORDER BY nombre_Grupo ASC; `, [doc]);
+        console.log('req.body', answer);
+        //retonar la respuesta
+        res.json(answer.rows);
+
+    } catch (error) {
+        console.log(error, 'error');
+    }
+}
 
 module.exports = {
     petitions_get,
@@ -527,7 +598,13 @@ module.exports = {
     petitions_get_info_user,
     petitions_post_file,
     petitions_post_group,
-    petitions_post_position
+    petitions_post_position, 
+    petitions_get_jovenes_lideres,
+    petitions_get_cargoFaltantesUser,
+    petitions_get_all_person_not_group,
+    petitions_get_group_exist,
+    petitions_get_grupos_persona
+
 }
 
 
