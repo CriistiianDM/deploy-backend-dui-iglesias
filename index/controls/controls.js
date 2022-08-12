@@ -522,6 +522,19 @@ const petitions_get_jovenes_lideres = async (req, res) => {
     }
 }
 
+const petitions_get_all_person_not_group = async (req, res) =>{
+    try {
+        let {id} = req.body;
+        const answer = await pool.query(`SELECT id,doc,first_name,second_name,first_last_name,second_last_name FROM person
+                                        WHERE id NOT IN(SELECT person_id FROM person_group
+                                        WHERE groups_id = $1)`,[id]);
+        console.log('req.body', answer);
+        //retonar la respuesta
+        res.json(answer.rows);
+    } catch (error) {
+        console.log(error, 'error'); 
+    }
+}
 
 
 /**
@@ -561,6 +574,7 @@ module.exports = {
     petitions_post_position, 
     petitions_get_jovenes_lideres,
     petitions_get_cargoFaltantesUser,
+    petitions_get_all_person_not_group,
     petitions_get_group_exist
 
 }
