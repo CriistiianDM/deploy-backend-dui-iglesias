@@ -586,9 +586,13 @@ module.exports = {
     petitions_post_group,
     petitions_post_position, 
     petitions_get_jovenes_lideres,
+<<<<<<< HEAD
+    petitions_get_grupos_persona
+=======
     petitions_get_cargoFaltantesUser,
     petitions_get_group_exist
 
+>>>>>>> eca2e337f5055bfa897117787b82e1990db7150c
 }
 
 
