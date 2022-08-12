@@ -569,7 +569,7 @@ const petitions_get_grupos_persona = async (req, res) => {
         //variables para capturar los parametros
         const { doc } = req.params;
         //consulta
-        const answer = await pool.query(`select g.description AS descripcion, g.name AS nombre_Grupo, g.url_img
+        const answer = await pool.query(`select g.id AS id, g.description AS descripcion, g.name AS nombre_Grupo, g.url_img
         from groups_eclesial g
         INNER JOIN person_group AS p
         ON g.id = p.groups_id AND g.logical_erase = false AND p.logical_erase = false
@@ -583,7 +583,18 @@ const petitions_get_grupos_persona = async (req, res) => {
         console.log(error, 'error');
     }
 }
+const petitions_post_group_person = async (req, res) => {
+    try {
+        let {person_id,group_id,position_id,status,logical_erase} = req.body;
+        const answer = await pool.query(`INSERT INTO person_group(id,person_id,groups_id,position_id,status,logical_erase)
+        VALUES(nextval('person_group_seq'),$1,$2,$3,$4,$5) `, [person_id,group_id,position_id,status,logical_erase]);
 
+        //retonar la respuesta
+        res.json({ message: 'ok' });        
+    } catch (error) {
+        console.log(error, 'error');
+    }
+}
 module.exports = {
     petitions_get,
     petitions_get_login,
@@ -603,7 +614,8 @@ module.exports = {
     petitions_get_cargoFaltantesUser,
     petitions_get_all_person_not_group,
     petitions_get_group_exist,
-    petitions_get_grupos_persona
+    petitions_get_grupos_persona,
+    petitions_post_group_person
 
 }
 

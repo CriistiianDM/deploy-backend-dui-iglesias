@@ -4,7 +4,8 @@ const { petitions_get, petitions_get_login, petitions_get_cargo_vigigentes,
     petitions_get_user_exist, petitions_get_email_exist, petitions_get_all_country,
     petitions_post_user, petitions_get_info_user, petitions_post_file, petitions_post_group ,
     petitions_post_position, petitions_get_jovenes_lideres,petitions_get_cargoFaltantesUser,
-    petitions_get_group_exist,petitions_get_all_person_not_group,petitions_get_grupos_persona} = require('../controls/controls');
+    petitions_get_group_exist,petitions_get_all_person_not_group,petitions_get_grupos_persona,
+    petitions_post_group_person} = require('../controls/controls');
 
 
 const multer = require('multer');
@@ -65,7 +66,8 @@ router.get('/zdpsg/:id', petitions_get_all_person_not_group)
 router.get('/gpi/:doc',petitions_get_grupos_persona);
 //la routa se llamara znmgr y sera un get para ver si el nombre del grupo existe
 router.get('/znmgr/:name', petitions_get_group_exist);
-
+//la ruta se llama zipg y sera un post para asignar personas a un grupo
+router.post('/zipg', petitions_post_group_person);
 
 
 module.exports = router;
