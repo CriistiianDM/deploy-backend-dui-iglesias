@@ -522,31 +522,18 @@ const petitions_get_jovenes_lideres = async (req, res) => {
     }
 }
 
-/**
-  *  @author : Juan Felipe Osorio Zapata <juan.felipe.osorio@correounivalle.edu.co>
-  *  @decs  : get para obtener los grupos a los que pertenece una persona
-  * 
-*/
-const petitions_get_grupos_persona = async (req, res) => {
-    
-        try {
-    
-            //variables para capturar los parametros
-            const { doc } = req.params;
-            //consulta
-            const answer = await pool.query(`select g.description AS descripcion, g.name AS nombre_Grupo, g.url_img
-            from groups_eclesial g
-            INNER JOIN person_group AS p
-            ON g.id = p.groups_id AND g.logical_erase = false AND p.logical_erase = false
-            WHERE p.person_id in (SELECT id from person where doc = $1 AND logical_erase = false)
-            ORDER BY nombre_Grupo ASC; `, [doc]);
-            console.log('req.body', answer);
-            //retonar la respuesta
-            res.json(answer.rows);
-    
-        } catch (error) {
-            console.log(error, 'error');
-        }
+const petitions_get_all_person_not_group = async (req, res) =>{
+    try {
+        let {id} = req.body;
+        const answer = await pool.query(`SELECT id,doc,first_name,second_name,first_last_name,second_last_name FROM person
+                                        WHERE id NOT IN(SELECT person_id FROM person_group
+                                        WHERE groups_id = $1)`,[id]);
+        console.log('req.body', answer);
+        //retonar la respuesta
+        res.json(answer.rows);
+    } catch (error) {
+        console.log(error, 'error'); 
+    }
 }
 
 
@@ -570,6 +557,44 @@ const petitions_get_group_exist = async (req, res) => {
     }
 }
 
+/**
+  *  @author : Juan Felipe Osorio Zapata <juan.felipe.osorio@correounivalle.edu.co>
+  *  @decs  : get para obtener los grupos a los que pertenece una persona
+  * 
+*/
+const petitions_get_grupos_persona = async (req, res) => {
+    
+    try {
+
+        //variables para capturar los parametros
+        const { doc } = req.params;
+        //consulta
+        const answer = await pool.query(`select g.id AS id, g.description AS descripcion, g.name AS nombre_Grupo, g.url_img
+        from groups_eclesial g
+        INNER JOIN person_group AS p
+        ON g.id = p.groups_id AND g.logical_erase = false AND p.logical_erase = false
+        WHERE p.person_id in (SELECT id from person where doc = $1 AND logical_erase = false)
+        ORDER BY nombre_Grupo ASC; `, [doc]);
+        console.log('req.body', answer);
+        //retonar la respuesta
+        res.json(answer.rows);
+
+    } catch (error) {
+        console.log(error, 'error');
+    }
+}
+const petitions_post_group_person = async (req, res) => {
+    try {
+        let {person_id,group_id,position_id,status,logical_erase} = req.body;
+        const answer = await pool.query(`INSERT INTO person_group(id,person_id,groups_id,position_id,status,logical_erase)
+        VALUES(nextval('person_group_seq'),$1,$2,$3,$4,$5) `, [person_id,group_id,position_id,status,logical_erase]);
+
+        //retonar la respuesta
+        res.json({ message: 'ok' });        
+    } catch (error) {
+        console.log(error, 'error');
+    }
+}
 module.exports = {
     petitions_get,
     petitions_get_login,
@@ -586,13 +611,12 @@ module.exports = {
     petitions_post_group,
     petitions_post_position, 
     petitions_get_jovenes_lideres,
-<<<<<<< HEAD
-    petitions_get_grupos_persona
-=======
     petitions_get_cargoFaltantesUser,
-    petitions_get_group_exist
+    petitions_get_all_person_not_group,
+    petitions_get_group_exist,
+    petitions_get_grupos_persona,
+    petitions_post_group_person
 
->>>>>>> eca2e337f5055bfa897117787b82e1990db7150c
 }
 
 
