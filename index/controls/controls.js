@@ -509,6 +509,32 @@ const petitions_get_jovenes_lideres = async (req, res) => {
     }
 }
 
+/**
+  *  @author : Juan Felipe Osorio Zapata <juan.felipe.osorio@correounivalle.edu.co>
+  *  @decs  : get para obtener los grupos a los que pertenece una persona
+  * 
+*/
+const petitions_get_grupos_persona = async (req, res) => {
+    
+        try {
+    
+            //variables para capturar los parametros
+            const { doc } = req.params;
+            //consulta
+            const answer = await pool.query(`select g.description AS descripcion, g.name AS nombre_Grupo, g.url_img
+            from groups_eclesial g
+            INNER JOIN person_group AS p
+            ON g.id = p.groups_id AND g.logical_erase = false AND p.logical_erase = false
+            WHERE p.person_id in (SELECT id from person where doc = $1 AND logical_erase = false)
+            ORDER BY nombre_Grupo ASC; `, [doc]);
+            console.log('req.body', answer);
+            //retonar la respuesta
+            res.json(answer.rows);
+    
+        } catch (error) {
+            console.log(error, 'error');
+        }
+}
 
 /*
  doc: '',
