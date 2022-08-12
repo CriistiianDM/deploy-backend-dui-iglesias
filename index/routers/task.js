@@ -3,7 +3,13 @@ const { petitions_get, petitions_get_login, petitions_get_cargo_vigigentes,
     petitions_put_periodo, petitions_get_user, petitions_get_all_user_active,
     petitions_get_user_exist, petitions_get_email_exist, petitions_get_all_country,
     petitions_post_user, petitions_get_info_user, petitions_post_file, petitions_post_group ,
+<<<<<<< HEAD
     petitions_post_position, petitions_get_jovenes_lideres, petitions_get_grupos_persona} = require('../controls/controls');
+=======
+    petitions_post_position, petitions_get_jovenes_lideres,petitions_get_cargoFaltantesUser,
+    petitions_get_group_exist} = require('../controls/controls');
+
+>>>>>>> eca2e337f5055bfa897117787b82e1990db7150c
 
 const multer = require('multer');
 const mimeTypes = require('mime-types');
@@ -29,6 +35,8 @@ router.get('/', petitions_get);
 //router.get('/', petitions_get);
 //la ruta se llamara zlgz y tendra 2 parametros hara referencia a la consulta del login
 router.get('/zlgz/:doc/:passwd', petitions_get_login);
+//la ruta se llamara zallcf llama a todos los cargos faltantes de un usuario segun su documento
+router.get('/zallcf/:doc',petitions_get_cargoFaltantesUser);
 //la ruta se llamara zcvg y tendra un parametro hara referencia a los cargos vigentes
 router.get('/zcvg/:doc', petitions_get_cargo_vigigentes);
 //la ruta se llamara znlp y tendra un parametro hara referencia al documento del usuario
@@ -55,8 +63,13 @@ router.post('/zagcat', petitions_post_position);
 router.put('/zuppt/:id', petitions_put_periodo);
 //la ruta se llamara zjlp y sera tipo get para traer todos los usuarios jovenes lideres
 router.get('/zjlp', petitions_get_jovenes_lideres);
+<<<<<<< HEAD
 //la ruta se llamara gpi y sera tipo get para traer todos los grupos de un usuario
 router.get('/gpi/:doc',petitions_get_grupos_persona);
+=======
+//la routa se llamara znmgr y sera un get para ver si el nombre del grupo existe
+router.get('/znmgr/:name', petitions_get_group_exist);
+>>>>>>> eca2e337f5055bfa897117787b82e1990db7150c
 
 
 module.exports = router;
