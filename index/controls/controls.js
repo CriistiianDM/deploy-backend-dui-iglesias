@@ -577,7 +577,8 @@ module.exports = {
     petitions_post_file,
     petitions_post_group,
     petitions_post_position, 
-    petitions_get_jovenes_lideres
+    petitions_get_jovenes_lideres,
+    petitions_get_grupos_persona
 }
 
 
