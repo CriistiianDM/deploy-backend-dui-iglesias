@@ -115,7 +115,26 @@ const verificar_post_cr_cargo = async (req, res, next) => {
 
 }
 
+const verificar_post_groups_person = async (req, res, next) => {
 
+    const state = get_group_person();
+    let index = 0;
+
+    (state).map((item) => {
+       
+        if (!validateFormate(((req.body)[item.data]),item.type)) {
+           res.json({ message: 'error en el formato de los datos' });
+        }else {
+            index++;
+        }
+    });
+
+    
+    if (index === state.length) {
+        next();
+    }
+
+}
 /*
   ------- funciones complementarias -------
 */
@@ -215,11 +234,24 @@ function get_name_state_cargo() {
     
 }
 
+function get_group_person() {
+
+    const state = [
+        {'data': 'person_id' , 'type': 7},
+        {'data': 'group_id' , 'type': 7},
+        {'data': 'position_id' , 'type': 7},
+        {'data': 'status' , 'type': 10}
+    ]
+
+    return state;
+}
+
 
 //exportar el middelware
 module.exports = {
     only_petitions_fronted,
     verificar_post_cr_user,
     verificar_post_cr_group,
-    verificar_post_cr_cargo
+    verificar_post_cr_cargo,
+    verificar_post_groups_person
 }
