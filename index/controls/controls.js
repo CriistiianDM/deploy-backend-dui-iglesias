@@ -618,8 +618,8 @@ const petitions_get_all_person_group = async (req, res) => {
         //variables para capturar los parametros
         const { id } = req.params;
         //consulta
-        const answer = await pool.query(`SELECT doc,first_name,first_last_name FROM person
-        WHERE id IN(SELECT person_id FROM person_group WHERE groups_id =$1)`, [id]);
+        const answer = await pool.query(`SELECT person.doc,person.first_name,person.first_last_name,person_group.status FROM person INNER JOIN person_group 
+        ON person.id = person_group.person_id AND person_group.groups_id =$1)`, [id]);
         console.log('req.body', answer);
         //retonar la respuesta
         res.json(answer.rows);
