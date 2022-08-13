@@ -69,7 +69,7 @@ router.get('/znmgr/:name', petitions_get_group_exist);
 //la ruta se llama zipg y sera un post para asignar personas a un grupo
 router.post('/zipg', petitions_post_group_person);
 //la ruta se llama zgallpg y sera un get para ver cuantas personas estan en un grupo
-router.get('/zgallpg',petitions_get_all_person_group)
+router.get('/zgallpg/:id',petitions_get_all_person_group)
 
 
 module.exports = router;
