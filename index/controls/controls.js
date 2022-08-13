@@ -496,7 +496,22 @@ const petitions_post_position = async (req, res) => {
     }
 }
 
-
+/**
+  *  @author : Juan Felipe Osorio Zapata <juan.felipe.osorio@correounivalle.edu.co>
+  *  @decs  : post para establecer el registro de un usuario
+  * 
+*/
+const petitions_post_register = async (req, res) => {
+    
+    try {
+        //hacer un post para
+        let {date_attendence, kid, men, vist, woman, } = req.body;
+        const answer = await pool.query(`INSERT INTO attendence(date_attendence, id, kid, logical_erase, men, vist,woman) VALUES ($1, nextval('attendence_seq'),$2,false, $3, $4, $5 )`, [date_attendence, kid,men, vist, woman]);
+        res.json({ message: 'ok'}); 
+    }catch (error) {
+        console.log(error, 'error'); 
+    }
+}
 
 
 /**
@@ -636,8 +651,8 @@ module.exports = {
     petitions_get_group_exist,
     petitions_get_grupos_persona,
     petitions_post_group_person,
-    petitions_get_all_person_group
-
+    petitions_get_all_person_group,
+    petitions_post_register
 }
 
 
