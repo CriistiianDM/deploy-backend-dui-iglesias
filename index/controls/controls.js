@@ -595,6 +595,26 @@ const petitions_post_group_person = async (req, res) => {
         console.log(error, 'error');
     }
 }
+
+const petitions_get_all_person_group = async (req, res) => {
+    
+    try {
+
+        //variables para capturar los parametros
+        const { id } = req.params;
+        //consulta
+        const answer = await pool.query(`SELECT doc,first_name,first_last_name FROM person
+        WHERE id IN(SELECT person_id FROM person_group WHERE groups_id =$1)`, [id]);
+        console.log('req.body', answer);
+        //retonar la respuesta
+        res.json(answer.rows);
+
+    } catch (error) {
+        console.log(error, 'error');
+    }
+}
+
+
 module.exports = {
     petitions_get,
     petitions_get_login,
@@ -615,7 +635,8 @@ module.exports = {
     petitions_get_all_person_not_group,
     petitions_get_group_exist,
     petitions_get_grupos_persona,
-    petitions_post_group_person
+    petitions_post_group_person,
+    petitions_get_all_person_group
 
 }
 
