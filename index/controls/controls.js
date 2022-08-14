@@ -598,6 +598,30 @@ const petitions_get_grupos_persona = async (req, res) => {
         console.log(error, 'error');
     }
 }
+
+const petitions_get_grupos_lider = async (req, res) => {
+    
+    try {
+
+        //variables para capturar los parametros
+        const { doc } = req.params;
+        //consulta
+        const answer = await pool.query(`select g.id AS id, g.description AS descripcion, g.name AS nombre_Grupo, g.url_img
+        from groups_eclesial g
+        INNER JOIN person_group AS p
+        ON g.id = p.groups_id AND g.logical_erase = false AND p.status ='Lider' AND p.logical_erase = false 
+        WHERE p.person_id in (SELECT id from person where doc = $1 AND logical_erase = false)
+        ORDER BY nombre_Grupo ASC`, [doc]);
+        console.log('req.body', answer);
+        //retonar la respuesta
+        res.json(answer.rows);
+
+    } catch (error) {
+        console.log(error, 'error');
+    }
+}
+
+
 const petitions_post_group_person = async (req, res) => {
     try {
         let {person_id,group_id,position_id,status,logical_erase} = req.body;
@@ -670,7 +694,8 @@ module.exports = {
     petitions_post_group_person,
     petitions_get_all_person_group,
     petitions_post_register,
-    petitions_get_church
+    petitions_get_church,
+    petitions_get_grupos_lider
 }
 
 
