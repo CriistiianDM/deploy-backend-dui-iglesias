@@ -637,7 +637,7 @@ const petitions_get_church = async (req, res) => {
         const { id } = req.params;
         //consulta
         const answer = await pool.query(`Select id,name,dir,latitud,longitud,tel1,tel2,date_init,subdivision_id,logical_erase FROM church
-        WHERE id= $1 AND logical_erase = false)`, [id]);
+        WHERE id= $1 AND logical_erase = false`, [id]);
         console.log('req.body', answer);
         //retonar la respuesta
         res.json(answer.rows);
