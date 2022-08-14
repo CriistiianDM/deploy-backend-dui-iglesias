@@ -5,7 +5,7 @@ const { petitions_get, petitions_get_login, petitions_get_cargo_vigigentes,
     petitions_post_user, petitions_get_info_user, petitions_post_file, petitions_post_group ,
     petitions_post_position, petitions_get_jovenes_lideres,petitions_get_cargoFaltantesUser,
     petitions_get_group_exist,petitions_get_all_person_not_group,petitions_get_grupos_persona,
-    petitions_post_group_person,petitions_get_all_person_group, petitions_post_register} = require('../controls/controls');
+    petitions_post_group_person,petitions_get_all_person_group, petitions_post_register,petitions_get_church} = require('../controls/controls');
 
 
 
@@ -73,5 +73,6 @@ router.post('/zipg', petitions_post_group_person);
 router.get('/zgallpg/:id',petitions_get_all_person_group);
 //la ruta se llamara api y sera un post para asignar la asistencia de una persona
 router.post('/api', petitions_post_register); 
-
+//la ruta se llamara zgchurch y sera un get de la iglesia que se le dio segun el id
+router.get('/zgchurch/:id',petitions_get_church)
 module.exports = router;
