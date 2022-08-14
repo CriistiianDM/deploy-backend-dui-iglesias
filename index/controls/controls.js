@@ -629,6 +629,23 @@ const petitions_get_all_person_group = async (req, res) => {
     }
 }
 
+const petitions_get_church = async (req, res) => {
+    
+    try {
+
+        //variables para capturar los parametros
+        const { id } = req.params;
+        //consulta
+        const answer = await pool.query(`Select id,name,dir,latitud,longitud,tel1,tel2,date_init,subdivision_id,logical_erase FROM church
+        WHERE id= $1 AND logical_erase = false)`, [id]);
+        console.log('req.body', answer);
+        //retonar la respuesta
+        res.json(answer.rows);
+
+    } catch (error) {
+        console.log(error, 'error');
+    }
+}
 
 module.exports = {
     petitions_get,
@@ -652,7 +669,8 @@ module.exports = {
     petitions_get_grupos_persona,
     petitions_post_group_person,
     petitions_get_all_person_group,
-    petitions_post_register
+    petitions_post_register,
+    petitions_get_church
 }
 
 
